@@ -117,7 +117,14 @@ public class AdminController : Controller
     {
         var u = await _userManager.FindByIdAsync(id);
         if (u != null && !await _userManager.IsInRoleAsync(u, "Admin"))
+        {
+            var propertyIds = await _db.Properties.Where(p => p.OwnerId == u.Id).Select(p => p.Id).ToListAsync();
+            await _db.Favorites.Where(f => f.UserId == u.Id || propertyIds.Contains(f.PropertyId)).ExecuteDeleteAsync();
+            await _db.ContactRequests.Where(c => c.UserId == u.Id || propertyIds.Contains(c.PropertyId)).ExecuteDeleteAsync();
+            await _db.PropertyImages.Where(i => propertyIds.Contains(i.PropertyId)).ExecuteDeleteAsync();
+            await _db.Properties.Where(p => p.OwnerId == u.Id).ExecuteDeleteAsync();
             await _userManager.DeleteAsync(u);
+        }
         return RedirectToAction("Users");
     }
 
