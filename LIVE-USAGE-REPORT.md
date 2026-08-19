@@ -1,7 +1,7 @@
 # Báo cáo kiểm thử trực tiếp
 
 Ngày: 19/08/2026
-Phương pháp: thao tác thật trên trình duyệt (Playwright + Brave qua CDP) với server chạy tại http://localhost:5000; kiểm chứng kèm truy vấn SQLite (realestate.db).
+Phương pháp: thao tác thật trên trình duyệt với server chạy tại http://localhost:5000; kiểm chứng kèm truy vấn SQLite (realestate.db).
 Kết quả chung: toàn bộ kịch bản ĐẠT qua 3 lượt kiểm thử (v1, v2 toàn diện, v3 sau redesign). Ba lỗi phát hiện trong quá trình test đều đã sửa (xem phần cuối).
 
 ## Tài khoản
@@ -116,7 +116,6 @@ Chi tiết trong SECURITY.md mục 3. Sửa: chuyển script inline vào site.js
 ## Ghi chú môi trường (cho lần test sau)
 
 - dotnet watch có thể chết âm thầm giữa chừng: kiểm tra `Invoke-WebRequest http://localhost:5000` trả 200 trước mỗi lượt, chết thì chạy lại
-- Playwright kết nối Brave qua CDP cổng 9222; nếu báo ECONNREFUSED nghĩa là Brave đã đóng, chạy lại lệnh khởi động
 - Hộp thoại xác nhận (xóa tin/user): đăng ký `page.on("dialog")` trước khi click; MCP báo "Modal state" treo là bình thường, xác nhận kết quả bằng DB
 - Nút Sửa ở bảng Tin của tôi là thẻ `<a>`; nút Xóa là submit form kèm confirm()
 - Trang Duyệt tin và Loại BĐS dùng div.card, không phải bảng

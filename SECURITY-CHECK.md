@@ -10,7 +10,7 @@ Phạm vi: website bất động sản (ASP.NET Core MVC, chạy tại http://lo
 
 ## Phương pháp
 
-- Kiểm thử trực tiếp trên server live qua Playwright + Brave (CDP)
+- Kiểm thử trực tiếp trên server live
 - Rà soát tĩnh mã nguồn: controllers, Program.cs, cấu hình
 - Quét lỗ hổng dependency: `dotnet list package --vulnerable --include-transitive`
 
