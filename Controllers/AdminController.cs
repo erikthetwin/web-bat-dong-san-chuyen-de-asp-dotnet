@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webapp_demo.Data;
@@ -12,7 +13,10 @@ public class AdminController : Controller
 {
     private readonly IAdminService _admin;
     private readonly ApplicationDbContext _db;
-    public AdminController(IAdminService admin, ApplicationDbContext db) { _admin = admin; _db = db; }
+    private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    public AdminController(IAdminService admin, ApplicationDbContext db, UserManager<AppUser> u, RoleManager<IdentityRole> r)
+    { _admin = admin; _db = db; _userManager = u; _roleManager = r; }
 
     public async Task<IActionResult> Index()
     {
@@ -57,5 +61,63 @@ public class AdminController : Controller
         var p = await _db.Properties.FindAsync(id);
         if (p != null) { p.Status = PropertyStatus.Banned; p.UpdatedAt = DateTime.Now; await _db.SaveChangesAsync(); }
         return RedirectToAction("Moderation");
+    }
+
+    public async Task<IActionResult> Users()
+    {
+        var users = new List<(AppUser User, List<string> Roles, bool Locked)>();
+        foreach (var u in await _db.Users.OrderBy(x => x.Email).ToListAsync())
+        {
+            users.Add((u, (await _userManager.GetRolesAsync(u)).ToList(), await _userManager.IsLockedOutAsync(u)));
+        }
+        ViewBag.Roles = await _roleManager.Roles.OrderBy(r => r.Name).ToListAsync();
+        return View(users);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> BlockUser(string id)
+    {
+        var u = await _userManager.FindByIdAsync(id);
+        if (u != null && !await _userManager.IsInRoleAsync(u, "Admin"))
+        {
+            await _userManager.SetLockoutEnabledAsync(u, true);
+            await _userManager.SetLockoutEndDateAsync(u, DateTimeOffset.MaxValue);
+        }
+        return RedirectToAction("Users");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UnblockUser(string id)
+    {
+        var u = await _userManager.FindByIdAsync(id);
+        if (u != null)
+            await _userManager.SetLockoutEndDateAsync(u, null);
+        return RedirectToAction("Users");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> SetRole(string id, string role)
+    {
+        var u = await _userManager.FindByIdAsync(id);
+        if (u != null && !await _userManager.IsInRoleAsync(u, "Admin") && await _roleManager.RoleExistsAsync(role))
+        {
+            var current = await _userManager.GetRolesAsync(u);
+            await _userManager.RemoveFromRolesAsync(u, current);
+            await _userManager.AddToRoleAsync(u, role);
+        }
+        return RedirectToAction("Users");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        var u = await _userManager.FindByIdAsync(id);
+        if (u != null && !await _userManager.IsInRoleAsync(u, "Admin"))
+            await _userManager.DeleteAsync(u);
+        return RedirectToAction("Users");
     }
 }
