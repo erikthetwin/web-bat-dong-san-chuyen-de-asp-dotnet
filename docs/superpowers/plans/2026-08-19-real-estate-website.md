@@ -861,6 +861,7 @@ Expected: hero search box, 6 featured cards with images/prices. Stop server.
 - Create: `Tests/Tests.csproj`, `Tests/ListingServiceTests.cs`
 - Create: `Controllers/ListingsController.cs`
 - Create: `Views/Listings/Index.cshtml`
+- Modify: `webapp demo.csproj` (add `<Compile Remove="Tests\**" />` etc. — Sdk.Web auto-globs `Tests/*.cs` into the main project otherwise)
 
 **Interfaces:**
 - Produces: `ListingService.SearchAsync(PropertyFilter, int page, int pageSize) -> SearchResult`; `GetApprovedByIdAsync(int) -> Property?`; `GetFeaturedAsync(int) -> List<Property>`; `GetDistrictsAsync() -> List<string>`. Only `Approved` status returned.
@@ -921,9 +922,9 @@ public class ListingServiceTests
         db.Users.Add(owner);
         db.PropertyTypes.AddRange(type1, type2);
         db.Properties.AddRange(
-            new Property { Title = "Căn hộ Quận 1 đẹp", Description = "gần chợ", Price = 3_000_000_000m, Area = 80m, Bedrooms = 2, District = "Quận 1", Status = PropertyStatus.Approved, OwnerId = owner.Id, PropertyTypeId = type1.Id },
-            new Property { Title = "Đất Gò Vấp rộng", Description = "mặt tiền", Price = 4_500_000_000m, Area = 120m, Bedrooms = 0, District = "Gò Vấp", Status = PropertyStatus.Approved, OwnerId = owner.Id, PropertyTypeId = type2.Id },
-            new Property { Title = "Nhà Bình Thạnh", Description = "cũ", Price = 1_000_000_000m, Area = 50m, Bedrooms = 1, District = "Bình Thạnh", Status = PropertyStatus.Pending, OwnerId = owner.Id, PropertyTypeId = type1.Id }
+            new Property { Title = "Căn hộ Quận 1 đẹp", Description = "gần chợ", Price = 3_000_000_000m, Area = 80m, Bedrooms = 2, District = "Quận 1", Status = PropertyStatus.Approved, OwnerId = owner.Id, PropertyType = type1 },
+            new Property { Title = "Đất Gò Vấp rộng", Description = "mặt tiền", Price = 4_500_000_000m, Area = 120m, Bedrooms = 0, District = "Gò Vấp", Status = PropertyStatus.Approved, OwnerId = owner.Id, PropertyType = type2 },
+            new Property { Title = "Nhà Bình Thạnh", Description = "cũ", Price = 1_000_000_000m, Area = 50m, Bedrooms = 1, District = "Bình Thạnh", Status = PropertyStatus.Pending, OwnerId = owner.Id, PropertyType = type1 }
         );
         await db.SaveChangesAsync();
         return (new ListingService(db), conn);
@@ -977,7 +978,7 @@ public class ListingServiceTests
     {
         var (service, _) = await CreateServiceAsync();
         var result = await service.SearchAsync(new PropertyFilter { Sort = "price_asc" });
-        Assert.Equal(1_000_000_000m, result.Items[0].Price);
+        Assert.Equal(3_000_000_000m, result.Items[0].Price);
     }
 }
 ```
@@ -1054,8 +1055,8 @@ public class ListingService : IListingService
 
         q = f.Sort switch
         {
-            "price_asc" => q.OrderBy(p => p.Price),
-            "price_desc" => q.OrderByDescending(p => p.Price),
+            "price_asc" => q.OrderBy(p => (double)p.Price),
+            "price_desc" => q.OrderByDescending(p => (double)p.Price),
             _ => q.OrderByDescending(p => p.CreatedAt)
         };
 
