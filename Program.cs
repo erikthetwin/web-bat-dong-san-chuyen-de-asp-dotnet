@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using webapp_demo.Data;
 using webapp_demo.Models;
 using webapp_demo.Services;
+using webapp_demo.Services.ML;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IListingService, ListingService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddSingleton<IPricePredictionService, PricePredictionService>();
 
 var app = builder.Build();
 
@@ -49,6 +51,8 @@ using (var scope = app.Services.CreateScope())
     await DbSeeder.SeedListingsAsync(
         scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(),
         scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>());
+    var ml = scope.ServiceProvider.GetRequiredService<IPricePredictionService>();
+    await ml.TrainIfNeededAsync();
 }
 
 app.Run();

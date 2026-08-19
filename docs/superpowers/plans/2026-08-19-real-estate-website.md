@@ -294,6 +294,7 @@ app.Run();
 @using webapp_demo
 @using webapp_demo.Models
 @using webapp_demo.Services
+@using webapp_demo.Services.ML
 @using Microsoft.AspNetCore.Identity
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 ```
