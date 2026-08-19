@@ -661,8 +661,9 @@ public static async Task SeedListingsAsync(ApplicationDbContext context, UserMan
 
     for (int i = 0; i < 23; i++)
     {
-        var d = Districts[rnd.Next(Districts.Count)];
-        var t = types.First(x => x.Name == typeNames[rnd.Next(typeNames.Length)]);
+var d = Districts[rnd.Next(Districts.Count)];
+            int nameIdx = rnd.Next(typeNames.Length);
+            var t = types.First(x => x.Name == typeNames[nameIdx]);
         decimal area = 40 + rnd.Next(25, 180);
         int bedrooms = rnd.Next(1, 6);
         int bathrooms = Math.Max(1, bedrooms - rnd.Next(0, 2));

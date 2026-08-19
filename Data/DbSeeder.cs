@@ -49,4 +49,67 @@ public static class DbSeeder
             await context.SaveChangesAsync();
         }
     }
+
+    public static async Task SeedListingsAsync(ApplicationDbContext context, UserManager<AppUser> userManager)
+    {
+        if (await context.Properties.AnyAsync()) return;
+
+        var seller = await userManager.FindByEmailAsync("seller@demo.com");
+        if (seller == null)
+        {
+            seller = new AppUser { UserName = "seller@demo.com", Email = "seller@demo.com", EmailConfirmed = true, FullName = "Người bán demo" };
+            await userManager.CreateAsync(seller, "Seller@123");
+            await userManager.AddToRoleAsync(seller, "Seller");
+        }
+
+        var types = await context.PropertyTypes.ToListAsync();
+        var rnd = new Random(42);
+        string[] streets = { "Nguyễn Văn Linh", "Lê Lợi", "Trần Hưng Đạo", "Hai Bà Trưng", "Võ Văn Ngân", "Nguyễn Thị Định", "Quốc Lộ 50", "Nguyễn Oanh" };
+        string[] typeNames = { "Nhà riêng", "Căn hộ", "Đất", "Biệt thự", "Nhà mặt tiền" };
+
+        for (int i = 0; i < 23; i++)
+        {
+            var d = Districts[rnd.Next(Districts.Count)];
+            int nameIdx = rnd.Next(typeNames.Length);
+            var t = types.First(x => x.Name == typeNames[nameIdx]);
+            decimal area = 40 + rnd.Next(25, 180);
+            int bedrooms = rnd.Next(1, 6);
+            int bathrooms = Math.Max(1, bedrooms - rnd.Next(0, 2));
+            decimal facade = 4 + (decimal)rnd.NextDouble() * 6;
+            decimal basePrice = d.PricePerM2 * area;
+            decimal typeFactor = t.Name switch
+            {
+                "Biệt thự" => 1.6m, "Nhà mặt tiền" => 1.8m, "Đất" => 1.1m, "Căn hộ" => 0.9m, _ => 1.0m
+            };
+            decimal price = basePrice * typeFactor * (1 + 0.03m * bedrooms) + rnd.Next(-20000000, 20000000);
+            if (price <= 0) price = 1_000_000m;
+
+            var p = new Property
+            {
+                Title = $"Bán {(t.Name == "Đất" ? "đất" : t.Name.ToLower())} tại {d.Name}, {streets[rnd.Next(streets.Length)]}",
+                Description = $"Bất động sản {t.Name.ToLower()} diện tích {area}m2 tại {d.Name}. Vị trí thuận lợi, hẻm rộng, gần chợ và trường học. Pháp lý rõ ràng, sổ hồng đầy đủ. Liên hệ ngay để xem nhà.",
+                Price = price,
+                Area = area,
+                Bedrooms = bedrooms,
+                Bathrooms = bathrooms,
+                Floors = 1 + rnd.Next(0, 4),
+                FacadeWidth = facade,
+                District = d.Name,
+                Ward = $"Phường {rnd.Next(1, 20)}",
+                Street = streets[rnd.Next(streets.Length)],
+                Address = $"{streets[rnd.Next(streets.Length)]}, {d.Name}, TP.HCM",
+                Latitude = d.Lat + rnd.NextDouble() * 0.02 - 0.01,
+                Longitude = d.Lng + rnd.NextDouble() * 0.02 - 0.01,
+                IsForRent = i % 6 == 0,
+                ContactPhone = $"09{rnd.Next(10000000, 99999999)}",
+                Status = i < 20 ? PropertyStatus.Approved : PropertyStatus.Pending,
+                PropertyTypeId = t.Id,
+                OwnerId = seller.Id,
+                CreatedAt = DateTime.Now.AddDays(-rnd.Next(0, 60))
+            };
+            context.Properties.Add(p);
+            context.PropertyImages.Add(new PropertyImage { Property = p, ImageUrl = $"/uploads/placeholder-{(i % 3) + 1}.svg", IsPrimary = true });
+        }
+        await context.SaveChangesAsync();
+    }
 }

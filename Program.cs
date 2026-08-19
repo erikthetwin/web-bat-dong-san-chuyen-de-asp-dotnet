@@ -41,6 +41,9 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     await DbSeeder.SeedAsync(scope.ServiceProvider);
+    await DbSeeder.SeedListingsAsync(
+        scope.ServiceProvider.GetRequiredService<ApplicationDbContext>(),
+        scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>());
 }
 
 app.Run();
