@@ -68,3 +68,34 @@ Mẹo thao tác (đã nghiệm ra khi test):
 - Trang Duyệt tin / Loại BĐS hiển thị bằng `div.card`, không phải bảng.
 - Form dự đoán giá không có trường giá — có `PropertyType`; bật/tắt "cho thuê" bằng checkbox `IsForRent`.
 - Sau mỗi nhóm kịch bản, kiểm chứng bằng truy vấn `realestate.db` (vd `python -c "import sqlite3; ..."`).
+
+### 4. Đặt lại dữ liệu demo (khi test làm hỏng dữ liệu)
+
+```powershell
+# Tắt server, xóa DB, chạy lại → tự tạo lại + seed + (nếu cần) huấn luyện lại ML
+Stop-Process -Name dotnet -Force -ErrorAction SilentlyContinue
+Remove-Item realestate.db -Force
+dotnet watch run --non-interactive --urls http://localhost:5000
+```
+
+- Dữ liệu chuẩn sau reset: 2 user (admin, seller), 23 tin (20 đã duyệt + 3 chờ duyệt), 6 loại BĐS, 1 ảnh/tin.
+- `ML/model.zip` + `ML/metrics.json` tồn tại thì mô hình không huấn luyện lại; xóa cả hai để huấn luyện lại từ đầu.
+- Tài khoản buyer dùng trong báo cáo (`anhnha@demo.com` / `Test@12345`) không nằm trong seed — đăng ký mới hoặc tạo qua UI.
+
+### 5. Kiểm thử toàn diện đa tài khoản
+
+Ma trận 21 nhóm kịch bản đã chạy và đạt (khách/buyer/seller/admin + vòng đời tin) nằm ở
+**Phụ lục B** của `LIVE-USAGE-TEST.md` — dùng làm checklist cho mỗi lượt test lại.
+Gồm: tìm kiếm/lọc, yêu thích, liên hệ, hồ sơ, đăng/sửa/xóa tin, duyệt/từ chối/khóa, quản lý
+người dùng (khóa/đổi vai trò/xóa), loại BĐS, dashboard đối chiếu DB, dự đoán giá ML.
+
+Quy ước trạng thái tin trong DB (`Properties.Status`): `0` Chờ duyệt, `1` Đã duyệt, `2` Từ chối, `3` Bị khóa.
+
+### 6. Lưu ý môi trường
+
+- `dotnet watch` có thể chết âm thầm giữa phiên (không có log lỗi) — trước mỗi lượt test kiểm tra
+  `Invoke-WebRequest http://localhost:5000` trả `200`, chết thì chạy lại lệnh ở mục 1.
+- Playwright kết nối Brave qua CDP: `cdp_url=http://localhost:9222`; nếu báo
+  `connect ECONNREFUSED ::1:9222` nghĩa là Brave đã bị đóng — chạy lại lệnh ở mục 2.
+- Khi dùng Playwright MCP, dialog xác nhận đã được `page.on('dialog')` xử lý thì báo "Modal state"
+  còn treo là hiện tượng bình thường — bỏ qua, xác nhận kết quả bằng dữ liệu DB.
