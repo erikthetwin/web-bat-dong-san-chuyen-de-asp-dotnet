@@ -30,6 +30,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IListingService, ListingService>();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IFavoriteService, FavoriteService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 var app = builder.Build();
 

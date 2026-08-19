@@ -293,6 +293,7 @@ app.Run();
 ```razor
 @using webapp_demo
 @using webapp_demo.Models
+@using webapp_demo.Services
 @using Microsoft.AspNetCore.Identity
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 ```
@@ -2454,16 +2455,18 @@ public class AdminService : IAdminService
             Sold = await all.CountAsync(p => p.Status == PropertyStatus.Sold),
             TotalUsers = await _db.Users.CountAsync(),
             TotalContacts = await _db.ContactRequests.CountAsync(),
-            ByType = await _db.Properties.GroupBy(p => p.PropertyType!.Name)
+            ByType = (await _db.Properties.GroupBy(p => p.PropertyType!.Name)
                 .Select(g => new { Name = g.Key, C = g.Count() })
                 .OrderByDescending(x => x.C)
+                .ToListAsync())
                 .Select(x => (x.Name, x.C))
-                .ToListAsync(),
-            ByDistrict = await _db.Properties.GroupBy(p => p.District)
+                .ToList(),
+            ByDistrict = (await _db.Properties.GroupBy(p => p.District)
                 .Select(g => new { Name = g.Key, C = g.Count() })
                 .OrderByDescending(x => x.C)
+                .ToListAsync())
                 .Select(x => (x.Name, x.C))
-                .ToListAsync()
+                .ToList()
         };
         return stats;
     }
