@@ -31,7 +31,7 @@
 ## Kiểm thử trực tiếp (Live Usage Test)
 
 Kiểm thử thao tác thật trên trình duyệt (Playwright) chống lại server đang chạy. Báo cáo kết quả
-đầy đủ tại `LIVE-USAGE-TEST.md` (kịch bản + hướng dẫn thao tác + kết quả mong đợi/thực tế + kiểm chứng DB).
+đầy đủ tại `LIVE-USAGE.md` (kịch bản + hướng dẫn thao tác + kết quả mong đợi/thực tế + kiểm chứng DB).
 
 ### 1. Chạy server với live reload
 
@@ -52,7 +52,7 @@ Start-Process "C:\Users\erikthetwin\AppData\Local\BraveSoftware\Brave-Browser\Ap
 
 Kiểm tra cổng CDP: `Invoke-WebRequest http://localhost:9222/json/version` → `200`.
 
-### 3. Kịch bản kiểm thử (theo `LIVE-USAGE-TEST.md`)
+### 3. Kịch bản kiểm thử (theo `LIVE-USAGE.md`)
 
 | Vai trò | Kịch bản | URL chính |
 |---|---|---|
@@ -85,7 +85,7 @@ dotnet watch run --non-interactive --urls http://localhost:5000
 ### 5. Kiểm thử toàn diện đa tài khoản
 
 Ma trận 21 nhóm kịch bản đã chạy và đạt (khách/buyer/seller/admin + vòng đời tin) nằm ở
-**Phụ lục B** của `LIVE-USAGE-TEST.md` — dùng làm checklist cho mỗi lượt test lại.
+**Phụ lục B** của `LIVE-USAGE.md` — dùng làm checklist cho mỗi lượt test lại.
 Gồm: tìm kiếm/lọc, yêu thích, liên hệ, hồ sơ, đăng/sửa/xóa tin, duyệt/từ chối/khóa, quản lý
 người dùng (khóa/đổi vai trò/xóa), loại BĐS, dashboard đối chiếu DB, dự đoán giá ML.
 
