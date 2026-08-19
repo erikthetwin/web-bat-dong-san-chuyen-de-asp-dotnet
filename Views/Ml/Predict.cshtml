@@ -5,58 +5,65 @@
     var types = (List<string>?)ViewBag.Types ?? new();
     var result = (PredictionResult?)ViewData["Result"];
 }
-<h1 class="h4 mb-3">Dự đoán giá bất động sản</h1>
+<div class="d-flex align-items-center gap-2 mb-4">
+    <i class="bi bi-graph-up-arrow fs-3 text-primary"></i>
+    <div>
+        <h1 class="h3 fw-bold mb-0">Dự đoán giá bất động sản</h1>
+        <p class="text-muted small mb-0">Mô hình ML.NET ước tính giá dựa trên thông tin bất động sản</p>
+    </div>
+</div>
 @if (ViewBag.Error != null)
 {
     <div class="alert alert-warning">@ViewBag.Error</div>
 }
-<div class="row">
+<div class="row g-4">
     <div class="col-md-6">
         <div class="card shadow-sm"><div class="card-body">
             <form asp-action="Predict" method="post">
-                <div class="mb-2">
-                    <label class="form-label">Quận/Huyện</label>
-                    <select asp-for="District" class="form-select">
+                <div class="mb-3">
+                    <label asp-for="District" class="form-label">Quận/Huyện</label>
+                    <select asp-for="District" id="District" class="form-select">
                         @foreach (var d in districts) { <option value="@d">@d</option> }
                     </select>
                 </div>
-                <div class="mb-2">
-                    <label class="form-label">Loại bất động sản</label>
-                    <select asp-for="PropertyType" class="form-select">
+                <div class="mb-3">
+                    <label asp-for="PropertyType" class="form-label">Loại bất động sản</label>
+                    <select asp-for="PropertyType" id="PropertyType" class="form-select">
                         @foreach (var t in types) { <option value="@t">@t</option> }
                     </select>
                 </div>
-                <div class="row g-2 mb-2">
+                <div class="row g-2 mb-3">
                     <div class="col-6"><label asp-for="Area" class="form-label">Diện tích (m²)</label><input asp-for="Area" class="form-control" /></div>
                     <div class="col-6"><label asp-for="FacadeWidth" class="form-label">Mặt tiền (m)</label><input asp-for="FacadeWidth" class="form-control" /></div>
                     <div class="col-4"><label asp-for="Bedrooms" class="form-label">Phòng ngủ</label><input asp-for="Bedrooms" class="form-control" /></div>
                     <div class="col-4"><label asp-for="Bathrooms" class="form-label">Phòng tắm</label><input asp-for="Bathrooms" class="form-control" /></div>
                     <div class="col-4"><label asp-for="Floors" class="form-label">Số tầng</label><input asp-for="Floors" class="form-control" /></div>
                 </div>
-                <div class="form-check mb-3"><input asp-for="IsForRent" class="form-check-input" /><label asp-for="IsForRent" class="form-check-label">Cho thuê</label></div>
-                <button type="submit" class="btn btn-primary w-100">Dự đoán giá</button>
+                <div class="form-check mb-4"><input asp-for="IsForRent" class="form-check-input" /><label asp-for="IsForRent" class="form-check-label">Cho thuê</label></div>
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-calculator me-1"></i> Dự đoán giá</button>
             </form>
         </div></div>
     </div>
     <div class="col-md-6">
         @if (result is { IsReady: true })
         {
-            <div class="card shadow-sm text-center"><div class="card-body">
-                <h2 class="h6 text-muted">Giá dự đoán (VND)</h2>
-                <p class="display-6 text-primary fw-bold">@result.PredictedPrice.ToString("N0")</p>
+            <div class="card shadow-sm text-center"><div class="card-body p-4">
+                <h2 class="h6 text-muted text-uppercase fw-semibold mb-3">Giá dự đoán (VND)</h2>
+                <p class="ml-result-price mb-4">@result.PredictedPrice.ToString("N0")</p>
                 <hr />
-                <div class="row">
-                    <div class="col-4"><div class="fw-bold">@result.R2.ToString("0.000")</div><small class="text-muted">R²</small></div>
-                    <div class="col-4"><div class="fw-bold">@result.RMSE.ToString("N0")</div><small class="text-muted">RMSE</small></div>
-                    <div class="col-4"><div class="fw-bold">@result.MAE.ToString("N0")</div><small class="text-muted">MAE</small></div>
+                <div class="row g-2">
+                    <div class="col-4"><div class="spec-tile"><div class="spec-value">@result.R2.ToString("0.000")</div><div class="spec-label">R²</div></div></div>
+                    <div class="col-4"><div class="spec-tile"><div class="spec-value">@result.RMSE.ToString("N0")</div><div class="spec-label">RMSE</div></div></div>
+                    <div class="col-4"><div class="spec-tile"><div class="spec-value">@result.MAE.ToString("N0")</div><div class="spec-label">MAE</div></div></div>
                 </div>
-                <p class="small text-muted mt-2">Mô hình: @result.ModelName</p>
+                <p class="small text-muted mt-3 mb-0">Mô hình: @result.ModelName</p>
             </div></div>
         }
         else
         {
-            <div class="card shadow-sm"><div class="card-body text-muted">
-                Nhập thông tin và nhấn "Dự đoán giá" để xem kết quả.
+            <div class="card shadow-sm"><div class="card-body p-5 text-center text-muted">
+                <i class="bi bi-lightbulb display-4 d-block mb-3"></i>
+                <p class="mb-0">Nhập thông tin và nhấn "Dự đoán giá" để xem kết quả.</p>
             </div></div>
         }
     </div>

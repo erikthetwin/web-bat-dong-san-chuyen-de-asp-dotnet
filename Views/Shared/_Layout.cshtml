@@ -3,16 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0F766E" />
     <title>@ViewData["Title"] - Bất động sản</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark" style="background: linear-gradient(135deg, #134E4A 0%, #0F766E 55%, #0369A1 100%); box-shadow: 0 2px 12px rgba(15, 118, 110, 0.35);">
     <div class="container">
-        <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index"><i class="bi bi-buildings"></i> Bất động sản</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+        <a class="navbar-brand navbar-brand-custom" asp-controller="Home" asp-action="Index"><i class="bi bi-buildings"></i> Bất động sản</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Mở menu điều hướng">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mainNav">
@@ -32,20 +36,20 @@
                     <li class="nav-item"><a class="nav-link" asp-controller="Admin" asp-action="Index">Quản trị</a></li>
                 }
             </ul>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav align-items-lg-center">
                 @if (User.Identity!.IsAuthenticated)
                 {
-                    <li class="nav-item"><span class="nav-link">Xin chào, @User.Identity.Name</span></li>
+                    <li class="nav-item"><span class="nav-link"><i class="bi bi-person-circle me-1"></i>@User.Identity.Name</span></li>
                     <li class="nav-item">
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-link nav-link">Đăng xuất</button>
+                            <button type="submit" class="btn btn-outline-light btn-sm rounded-pill px-3">Đăng xuất</button>
                         </form>
                     </li>
                 }
                 else
                 {
                     <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login">Đăng nhập</a></li>
-                    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Register">Đăng ký</a></li>
+                    <li class="nav-item ms-lg-2"><a class="btn btn-warning btn-sm rounded-pill px-3" asp-controller="Account" asp-action="Register">Đăng ký</a></li>
                 }
             </ul>
         </div>
@@ -54,7 +58,17 @@
 <main class="container my-4">
     @RenderBody()
 </main>
-<footer class="border-top py-3 text-center text-muted">Website mua bán bất động sản — Đồ án Chuyên đề ASP.NET</footer>
+<footer class="footer-brand py-4 mt-auto">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-buildings fs-5"></i>
+            <span class="fw-semibold">Website mua bán bất động sản</span>
+        </div>
+        <div class="small">
+            Đồ án Chuyên đề ASP.NET · <a asp-controller="Home" asp-action="Index">Trang chủ</a> · <a asp-controller="Listings" asp-action="Index">Tìm nhà</a>
+        </div>
+    </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js"></script>
 @await RenderSectionAsync("Scripts", required: false)

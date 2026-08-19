@@ -279,3 +279,44 @@ Model ML.NET không mang sẵn các chỉ số này.
 - Nút "Sửa" ở bảng "Tin của tôi" là thẻ `<a>` (không phải `<button>`); nút "Xóa" là submit của form kèm `confirm()`.
 - Trang Duyệt tin / Loại BĐS dùng thẻ `div.card`, không phải bảng.
 - Form dự đoán giá không có trường "Giá" — có `PropertyType` thay thế.
+
+---
+
+# Phụ lục C — Kiểm thử lại sau Redesign UI/UX (19/08/2026, v3)
+
+Kiểm thử TOÀN BỘ chức năng sau khi thay giao diện bằng skill `ui-ux-pro-max`
+(theme teal #0F766E, font Be Vietnam Pro, Bootstrap 5 + lớp CSS tùy chỉnh `site.css`).
+Mục tiêu: xác nhận **không regress** chức năng và UI/UX nhất quán trên toàn site.
+
+## Kết quả theo nhóm chức năng
+
+| # | Nhóm | Thao tác | Kết quả |
+|---|---|---|---|
+| 1 | Theme - áp dụng | Font "Be Vietnam Pro" trên `body`; navbar sticky (62px) gradient `linear-gradient(135deg,#134E4A,#0F766E,#0369A1)`; hero gradient + ô tìm kiếm kính mờ (`rgba(255,255,255,.14)`); nút `.btn-primary` gradient teal #0F766E→#0D9488, chữ trắng | ✅ |
+| 2 | Khách - trang chủ | Hero + 6 card nổi bật (6 badge Cho thuê/Mua bán) | ✅ |
+| 3 | Khách - danh sách | Tìm "Thủ Đức" → 4 kết quả; đủ 10 trường lọc (keyword/district/propertyTypeId/minPrice/maxPrice/minArea/maxArea/bedrooms/isForRent/sort); phân trang 3 mục; submit lọc → URL đúng query string; lọc Quận 1 + sort giá giảm dần → 4 card | ✅ |
+| 4 | Khách - chi tiết | Gallery `#gallery`, bản đồ `#map`, 5 spec-tile, breadcrumb; form liên hệ ẩn khi chưa đăng nhập | ✅ |
+| 5 | ML - dự đoán | Có `select#District`, `select#PropertyType`, 5 input số, checkbox `IsForRent`, KHÔNG có `input[name=Price]`; dự đoán 75m²/2PN/1WC/1 tầng → hiển thị giá (đúng tiền tệ) | ✅ |
+| 6 | Buyer - đăng nhập | anhnha@demo.com vào được; nav hiện tên + nút Đăng xuất | ✅ |
+| 7 | Buyer - liên hệ | Gửi kèm SĐT → alert success; DB ContactRequests 1 → 2 | ✅ |
+| 8 | Buyer - yêu thích | Bấm "Lưu tin" ở Details/8 → /Favorites 1 → 2 card; DB Favorites 1 → 2 | ✅ |
+| 9 | Buyer - hồ sơ | /Account/Profile đủ 5 input (FullName/Phone/Address/NewPassword/ConfirmNewPassword) | ✅ |
+| 10 | Seller - danh sách | Bảng 24 dòng, 24 link "Sửa" (`<a>`), 24 form "Xóa", 24 badge trạng thái | ✅ |
+| 11 | Seller - đăng tin | Form đủ 16 field + 13 quận (có "Thủ Đức"); đăng tin + ảnh → "Chờ duyệt", alert success, bảng 25 dòng | ✅ |
+| 12 | Admin - duyệt | /Admin/Moderation hiện 1 tin chờ (tin mới); bấm Duyệt → tin công khai, tìm thấy ở /Listings | ✅ |
+| 13 | Admin - dashboard | 8 stat-card, 2 bảng số liệu (khớp cấu trúc cũ) | ✅ |
+| 14 | Admin - loại BĐS | `input[name=name]` + form `/Admin/CreateType`, 7 form ToggleType | ✅ |
+| 15 | Admin - người dùng | Bảng 3 user, 3 select role; 2 nút Khóa/Mở khóa + 2 nút Xóa (dòng admin không có — đúng) | ✅ |
+| 16 | Quyền | Admin truy cập /MyListings/Edit/29 → AccessDenied (đúng, không phải lỗi giao diện) | ✅ |
+| 17 | Seller - sửa tin | Edit/29 đủ form + nút "Lưu thay đổi"; sửa tiêu đề → lưu, hiển thị mới | ✅ |
+| 18 | Seller - xóa tin | Dialog "Xóa tin này?" → accept → tin biến mất; bảng về 24 dòng | ✅ |
+| 19 | Unit tests | `dotnet test Tests/Tests.csproj` → 5/5 Passed | ✅ |
+| 20 | UI/UX nhất quán | Cả 4 trang đo (Login/ML/Details/Create): navbar sticky 62px, card bo 16px + viền teal `rgba(15,118,110,.15)` + shadow nhẹ, footer 78px, font Be Vietnam Pro | ✅ |
+| 21 | Toàn vẹn DB cuối | 26 tin (24 đã duyệt/2 chờ... đúng trạng thái trước test), favs 2, contacts 2; tin test đã tạo+duyệt+xóa sạch | ✅ |
+
+## Ghi chú
+
+- Không phát hiện lỗi/regression nào sau redesign; mọi selector, tên form, hành vi (dialog, link Sửa, ẩn form theo quyền) giữ nguyên.
+- Ảnh chụp màn hình: `.playwright-mcp/redesign-home.png`, `.playwright-mcp/qa-login.png` (thư mục đã gitignore).
+- Kết quả build: `dotnet build` — 0 lỗi (3 cảnh báo có sẵn, không phải do thay đổi).
+- Dữ liệu test đã dọn sạch: tin "Tin test sau redesign" xóa khỏi DB sau lifecycle.

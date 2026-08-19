@@ -4,26 +4,33 @@
 {
     <div class="alert alert-success">@TempData["Success"]</div>
 }
-<h1 class="h4 mb-3">Tin đã lưu (@Model.Count)</h1>
+<h1 class="h3 fw-bold mb-4"><i class="bi bi-heart-fill text-danger me-2"></i>Tin đã lưu (@Model.Count)</h1>
 @if (Model.Count == 0)
 {
-    <p class="text-muted">Bạn chưa lưu tin nào.</p>
+    <div class="card p-5 text-center text-muted">
+        <i class="bi bi-heart display-4 mb-3"></i>
+        <p class="mb-0">Bạn chưa lưu tin nào. Hãy khám phá và lưu những bất động sản yêu thích.</p>
+        <a asp-controller="Listings" asp-action="Index" class="btn btn-primary mt-3 mx-auto px-4">Tìm nhà</a>
+    </div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-3 g-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
         @foreach (var p in Model)
         {
             <div class="col">
-                <div class="card h-100 shadow-sm">
-                    <img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" class="card-img-top" style="height:170px;object-fit:cover" alt="@p.Title" />
+                <div class="card property-card h-100 card-hover">
+                    <div class="position-relative">
+                        <img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" class="card-img-top" style="height:170px;object-fit:cover" alt="@p.Title" />
+                        <span class="badge @(p.IsForRent ? "badge-rent" : "badge-sale") position-absolute top-0 start-0 m-2">@(p.IsForRent ? "Cho thuê" : "Bán")</span>
+                    </div>
                     <div class="card-body">
-                        <h6 class="card-title"><a asp-controller="Listings" asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none">@p.Title</a></h6>
-                        <p class="text-primary fw-bold mb-1">@p.Price.ToString("N0") đ</p>
-                        <p class="text-muted small mb-2"><i class="bi bi-geo-alt"></i> @p.District</p>
+                        <h6 class="card-title"><a asp-controller="Listings" asp-action="Details" asp-route-id="@p.Id">@p.Title</a></h6>
+                        <p class="price mb-2">@p.Price.ToString("N0") đ</p>
+                        <p class="text-muted small mb-3"><i class="bi bi-geo-alt"></i> @p.District</p>
                         <form asp-controller="Favorites" asp-action="Toggle" method="post">
                             <input type="hidden" name="propertyId" value="@p.Id" />
-                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-heartbreak"></i> Bỏ lưu</button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm w-100"><i class="bi bi-heartbreak me-1"></i> Bỏ lưu</button>
                         </form>
                     </div>
                 </div>

@@ -4,15 +4,16 @@
     var types = (List<PropertyType>?)ViewBag.Types ?? new();
     var districts = (List<string>?)ViewBag.Districts ?? new();
 }
-<h1 class="h4 mb-3">Sửa tin</h1>
+<h1 class="h3 fw-bold mb-4"><i class="bi bi-pencil-square me-2 text-primary"></i>Sửa tin</h1>
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
-    <div class="row">
+    <div class="row g-4">
         <div class="col-md-8">
-            <div class="card shadow-sm mb-3"><div class="card-body">
-                <div class="mb-2"><label asp-for="Title" class="form-label"></label><input asp-for="Title" class="form-control" /></div>
-                <div class="mb-2"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="5"></textarea></div>
+            <div class="card shadow-sm mb-4"><div class="card-body">
+                <h2 class="h6 fw-bold text-uppercase text-primary mb-3">Thông tin chính</h2>
+                <div class="mb-3"><label asp-for="Title" class="form-label"></label><input asp-for="Title" class="form-control" /></div>
+                <div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="5"></textarea></div>
                 <div class="row g-2">
                     <div class="col-md-6"><label asp-for="Price" class="form-label"></label><input asp-for="Price" class="form-control" /></div>
                     <div class="col-md-6"><label asp-for="Area" class="form-label"></label><input asp-for="Area" class="form-control" /></div>
@@ -22,8 +23,8 @@
                     <div class="col-md-3"><label asp-for="FacadeWidth" class="form-label"></label><input asp-for="FacadeWidth" class="form-control" /></div>
                 </div>
             </div></div>
-            <div class="card shadow-sm mb-3"><div class="card-body">
-                <h2 class="h6">Vị trí</h2>
+            <div class="card shadow-sm mb-4"><div class="card-body">
+                <h2 class="h6 fw-bold text-uppercase text-primary mb-3"><i class="bi bi-geo-alt me-1"></i>Vị trí</h2>
                 <div class="row g-2">
                     <div class="col-md-4"><label asp-for="District" class="form-label"></label><select asp-for="District" class="form-select"><option value="">Chọn quận</option>@foreach (var d in districts) { <option value="@d">@d</option> }</select></div>
                     <div class="col-md-4"><label asp-for="Ward" class="form-label"></label><input asp-for="Ward" class="form-control" /></div>
@@ -35,15 +36,16 @@
             </div></div>
         </div>
         <div class="col-md-4">
-            <div class="card shadow-sm mb-3"><div class="card-body">
-                <div class="mb-2"><label asp-for="PropertyTypeId" class="form-label"></label><select asp-for="PropertyTypeId" class="form-select" required><option value="">Chọn loại</option>@foreach (var t in types) { <option value="@t.Id">@t.Name</option> }</select></div>
-                <div class="mb-2"><label asp-for="ContactPhone" class="form-label"></label><input asp-for="ContactPhone" class="form-control" /></div>
-                <div class="form-check mb-3"><input asp-for="IsForRent" class="form-check-input" /><label asp-for="IsForRent" class="form-check-label"></label></div>
-                <div class="mb-2"><label asp-for="Images" class="form-label"></label><input asp-for="Images" type="file" class="form-control" multiple accept=".jpg,.jpeg,.png,.webp" /></div>
+            <div class="card shadow-sm mb-4"><div class="card-body">
+                <h2 class="h6 fw-bold text-uppercase text-primary mb-3">Loại & liên hệ</h2>
+                <div class="mb-3"><label asp-for="PropertyTypeId" class="form-label"></label><select asp-for="PropertyTypeId" class="form-select" required><option value="">Chọn loại</option>@foreach (var t in types) { <option value="@t.Id">@t.Name</option> }</select></div>
+                <div class="mb-3"><label asp-for="ContactPhone" class="form-label"></label><input asp-for="ContactPhone" class="form-control" /></div>
+                <div class="form-check mb-4"><input asp-for="IsForRent" class="form-check-input" /><label asp-for="IsForRent" class="form-check-label">Cho thuê</label></div>
+                <div class="mb-4"><label asp-for="Images" class="form-label"></label><input asp-for="Images" type="file" class="form-control" multiple accept=".jpg,.jpeg,.png,.webp" /></div>
                 @if (ViewBag.ExistingImages is List<PropertyImage> imgs && imgs.Count > 0)
                 {
-                    <p class="small text-muted">Hình hiện tại:</p>
-                    <div class="row g-1 mb-2">
+                    <p class="small text-muted fw-semibold">Hình hiện tại:</p>
+                    <div class="row g-2 mb-3">
                         @foreach (var img in imgs)
                         {
                             <div class="col-6">
@@ -57,7 +59,7 @@
                         }
                     </div>
                 }
-                <button type="submit" class="btn btn-primary w-100">Lưu thay đổi</button>
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check2-circle me-1"></i> Lưu thay đổi</button>
             </div></div>
         </div>
     </div>

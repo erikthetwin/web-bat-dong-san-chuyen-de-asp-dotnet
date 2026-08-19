@@ -3,61 +3,65 @@
     ViewData["Title"] = "Quản lý người dùng";
     var roles = (List<IdentityRole>?)ViewBag.Roles ?? new();
 }
-<h1 class="h4 mb-3">Quản lý người dùng</h1>
-<table class="table table-striped align-middle">
-    <thead><tr><th>Email</th><th>Họ tên</th><th>Vai trò</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
-    <tbody>
-    @foreach (var (user, roleList, locked) in Model)
-    {
-        <tr>
-            <td>@user.Email</td>
-            <td>@user.FullName</td>
-            <td>
-                <form asp-action="SetRole" method="post" class="d-flex gap-1">
-                    <input type="hidden" name="id" value="@user.Id" />
-                    <select name="role" class="form-select form-select-sm">
-                        @foreach (var r in roles)
+<h1 class="h3 fw-bold mb-4"><i class="bi bi-people me-2 text-primary"></i>Quản lý người dùng</h1>
+<div class="card shadow-sm"><div class="card-body p-0">
+    <div class="table-responsive">
+        <table class="table table-striped align-middle mb-0">
+            <thead><tr><th>Email</th><th>Họ tên</th><th>Vai trò</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+            <tbody>
+            @foreach (var (user, roleList, locked) in Model)
+            {
+                <tr>
+                    <td>@user.Email</td>
+                    <td>@user.FullName</td>
+                    <td>
+                        <form asp-action="SetRole" method="post" class="d-flex gap-1">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <select name="role" class="form-select form-select-sm" style="width:auto;">
+                                @foreach (var r in roles)
+                                {
+                                    <option value="@r.Name" selected="@(roleList.Contains(r.Name))">@r.Name</option>
+                                }
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Đổi</button>
+                        </form>
+                    </td>
+                    <td>
+                        @if (locked)
                         {
-                            <option value="@r.Name" selected="@(roleList.Contains(r.Name))">@r.Name</option>
+                            <span class="badge bg-danger">Đã khóa</span>
                         }
-                    </select>
-                    <button type="submit" class="btn btn-sm btn-outline-primary">Đổi</button>
-                </form>
-            </td>
-            <td>
-                @if (locked)
-                {
-                    <span class="badge bg-danger">Đã khóa</span>
-                }
-                else
-                {
-                    <span class="badge bg-success">Hoạt động</span>
-                }
-            </td>
-            <td class="text-end">
-                @if (!roleList.Contains("Admin"))
-                {
-                    @if (locked)
-                    {
-                        <form asp-action="UnblockUser" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@user.Id" />
-                            <button class="btn btn-sm btn-outline-success">Mở khóa</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <form asp-action="BlockUser" method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@user.Id" />
-                            <button class="btn btn-sm btn-outline-warning">Khóa</button>
-                        </form>
-                    }
-                    <form asp-action="DeleteUser" method="post" class="d-inline" onsubmit="return confirm('Xóa tài khoản này?');">
-                        <input type="hidden" name="id" value="@user.Id" />
-                        <button class="btn btn-sm btn-outline-danger">Xóa</button>
-                    </form>
-                }
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+                        else
+                        {
+                            <span class="badge bg-success">Hoạt động</span>
+                        }
+                    </td>
+                    <td class="text-end">
+                        @if (!roleList.Contains("Admin"))
+                        {
+                            @if (locked)
+                            {
+                                <form asp-action="UnblockUser" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <button class="btn btn-sm btn-outline-success">Mở khóa</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <form asp-action="BlockUser" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@user.Id" />
+                                    <button class="btn btn-sm btn-outline-warning">Khóa</button>
+                                </form>
+                            }
+                            <form asp-action="DeleteUser" method="post" class="d-inline" onsubmit="return confirm('Xóa tài khoản này?');">
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button class="btn btn-sm btn-outline-danger">Xóa</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div></div>

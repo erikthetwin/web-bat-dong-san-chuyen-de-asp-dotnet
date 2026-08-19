@@ -6,14 +6,14 @@
     var districts = (List<string>?)ViewBag.Districts ?? new();
 }
 
-<div class="row">
-    <div class="col-md-3">
-        <div class="card shadow-sm mb-3">
+<div class="row g-4">
+    <div class="col-lg-3">
+        <div class="card shadow-sm sticky-lg-top" style="top: 88px;">
             <div class="card-body">
-                <h5 class="card-title"><i class="bi bi-funnel"></i> Bộ lọc</h5>
+                <h5 class="card-title fw-bold mb-3"><i class="bi bi-funnel me-1"></i> Bộ lọc</h5>
                 <form asp-controller="Listings" asp-action="Index" method="get">
-                    <div class="mb-2"><input type="text" name="keyword" class="form-control" placeholder="Từ khóa" value="@f.Keyword" /></div>
-                    <div class="mb-2">
+                    <div class="mb-3"><input type="text" name="keyword" class="form-control" placeholder="Từ khóa" value="@f.Keyword" /></div>
+                    <div class="mb-3">
                         <select name="district" class="form-select">
                             <option value="">Tất cả quận/huyện</option>
                             @foreach (var d in districts)
@@ -22,7 +22,7 @@
                             }
                         </select>
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <select name="propertyTypeId" class="form-select">
                             <option value="">Tất cả loại hình</option>
                             @foreach (var t in types)
@@ -31,15 +31,15 @@
                             }
                         </select>
                     </div>
-                    <div class="row g-1 mb-2">
+                    <div class="row g-2 mb-3">
                         <div class="col-6"><input type="number" name="minPrice" class="form-control" placeholder="Giá từ" value="@f.MinPrice" /></div>
                         <div class="col-6"><input type="number" name="maxPrice" class="form-control" placeholder="Đến" value="@f.MaxPrice" /></div>
                     </div>
-                    <div class="row g-1 mb-2">
+                    <div class="row g-2 mb-3">
                         <div class="col-6"><input type="number" name="minArea" class="form-control" placeholder="Diện tích từ" value="@f.MinArea" /></div>
                         <div class="col-6"><input type="number" name="maxArea" class="form-control" placeholder="Đến" value="@f.MaxArea" /></div>
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-3">
                         <select name="bedrooms" class="form-select">
                             <option value="">Số phòng ngủ</option>
                             @for (int i = 1; i <= 6; i++)
@@ -62,48 +62,62 @@
                             <option value="price_desc" selected="@(f.Sort == "price_desc")">Giá giảm dần</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Lọc</button>
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-md-9">
-        <p class="text-muted">Tìm thấy <strong>@Model.TotalCount</strong> bất động sản</p>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
-            @foreach (var p in Model.Items)
-            {
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" class="card-img-top" style="height:170px;object-fit:cover" alt="@p.Title" />
-                        <div class="card-body">
-                            <span class="badge bg-danger mb-2">@(p.IsForRent ? "Cho thuê" : "Bán")</span>
-                            <h6 class="card-title"><a asp-controller="Listings" asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none">@p.Title</a></h6>
-                            <p class="text-primary fw-bold mb-1">@p.Price.ToString("N0") đ</p>
-                            <p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> @p.District</p>
-                            <p class="text-muted small mb-0">@p.Area.ToString("N0") m² · @p.Bedrooms PN · @p.Bathrooms WC</p>
+    <div class="col-lg-9">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <p class="text-muted mb-0">Tìm thấy <strong>@Model.TotalCount</strong> bất động sản</p>
+        </div>
+        @if (Model.Items.Count == 0)
+        {
+            <div class="card p-5 text-center text-muted">
+                <i class="bi bi-search display-4 mb-3"></i>
+                <p class="mb-0">Không tìm thấy bất động sản phù hợp. Hãy thử điều chỉnh bộ lọc.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+                @foreach (var p in Model.Items)
+                {
+                    <div class="col">
+                        <div class="card property-card h-100 card-hover">
+                            <div class="position-relative">
+                                <img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" class="card-img-top" style="height:170px;object-fit:cover" alt="@p.Title" />
+                                <span class="badge @(p.IsForRent ? "badge-rent" : "badge-sale") position-absolute top-0 start-0 m-2">@(p.IsForRent ? "Cho thuê" : "Bán")</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title"><a asp-controller="Listings" asp-action="Details" asp-route-id="@p.Id">@p.Title</a></h6>
+                                <p class="price mb-1">@p.Price.ToString("N0") đ</p>
+                                <p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> @p.District</p>
+                                <p class="text-muted small mb-0">@p.Area.ToString("N0") m² · @p.Bedrooms PN · @p.Bathrooms WC</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-        @if (Model.TotalPages > 1)
-        {
-            <nav class="mt-4"><ul class="pagination justify-content-center">
-                @for (int i = 1; i <= Model.TotalPages; i++)
-                {
-                    var qs = new Dictionary<string, string?>
-                    {
-                        ["keyword"] = f.Keyword, ["district"] = f.District,
-                        ["propertyTypeId"] = f.PropertyTypeId?.ToString(), ["minPrice"] = f.MinPrice?.ToString(),
-                        ["maxPrice"] = f.MaxPrice?.ToString(), ["minArea"] = f.MinArea?.ToString(),
-                        ["maxArea"] = f.MaxArea?.ToString(), ["bedrooms"] = f.Bedrooms?.ToString(),
-                        ["isForRent"] = f.IsForRent?.ToString(), ["sort"] = f.Sort, ["page"] = i.ToString()
-                    };
-                    <li class="page-item @(i == Model.Page ? "active" : "")">
-                        <a class="page-link" asp-controller="Listings" asp-action="Index" asp-all-route-data="qs">@i</a>
-                    </li>
                 }
-            </ul></nav>
+            </div>
+            @if (Model.TotalPages > 1)
+            {
+                <nav class="mt-4"><ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        var qs = new Dictionary<string, string?>
+                        {
+                            ["keyword"] = f.Keyword, ["district"] = f.District,
+                            ["propertyTypeId"] = f.PropertyTypeId?.ToString(), ["minPrice"] = f.MinPrice?.ToString(),
+                            ["maxPrice"] = f.MaxPrice?.ToString(), ["minArea"] = f.MinArea?.ToString(),
+                            ["maxArea"] = f.MaxArea?.ToString(), ["bedrooms"] = f.Bedrooms?.ToString(),
+                            ["isForRent"] = f.IsForRent?.ToString(), ["sort"] = f.Sort, ["page"] = i.ToString()
+                        };
+                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                            <a class="page-link" asp-controller="Listings" asp-action="Index" asp-all-route-data="qs">@i</a>
+                        </li>
+                    }
+                </ul></nav>
+            }
         }
     </div>
 </div>

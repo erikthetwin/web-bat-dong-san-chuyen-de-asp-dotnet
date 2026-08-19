@@ -10,3 +10,5 @@ TestResults/
 smoke-*.log
 .playwright-mcp/
 .omo/
+.opencode/
+.docs/

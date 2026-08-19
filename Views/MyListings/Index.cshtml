@@ -4,44 +4,52 @@
 {
     <div class="alert alert-success">@TempData["Success"]</div>
 }
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h4 mb-0">Tin của tôi</h1>
-    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Đăng tin mới</a>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <h1 class="h3 fw-bold mb-0"><i class="bi bi-megaphone me-2 text-primary"></i>Tin của tôi</h1>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i> Đăng tin mới</a>
 </div>
 @if (Model.Count == 0)
 {
-    <p class="text-muted">Bạn chưa đăng tin nào.</p>
+    <div class="card p-5 text-center text-muted">
+        <i class="bi bi-megaphone display-4 mb-3"></i>
+        <p class="mb-0">Bạn chưa đăng tin nào.</p>
+        <a asp-action="Create" class="btn btn-primary mt-3 mx-auto px-4">Đăng tin đầu tiên</a>
+    </div>
 }
 else
 {
-    <table class="table table-striped align-middle">
-        <thead><tr><th>Hình</th><th>Tiêu đề</th><th>Giá</th><th>Trạng thái</th><th>Ngày đăng</th><th></th></tr></thead>
-        <tbody>
-        @foreach (var p in Model)
-        {
-            <tr>
-                <td><img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" style="width:80px;height:60px;object-fit:cover" class="rounded" alt="" /></td>
-                <td>@p.Title</td>
-                <td>@p.Price.ToString("N0") đ</td>
-                <td>
-                    @switch (p.Status)
-                    {
-                        case PropertyStatus.Pending: <span class="badge bg-warning text-dark">Chờ duyệt</span>; break;
-                        case PropertyStatus.Approved: <span class="badge bg-success">Đã duyệt</span>; break;
-                        case PropertyStatus.Rejected: <span class="badge bg-danger">Bị từ chối</span>; break;
-                        case PropertyStatus.Banned: <span class="badge bg-dark">Bị khóa</span>; break;
-                        case PropertyStatus.Sold: <span class="badge bg-secondary">Đã bán</span>; break;
-                    }
-                </td>
-                <td>@p.CreatedAt.ToString("dd/MM/yyyy")</td>
-                <td class="text-end">
-                    <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
-                    <form asp-action="Delete" asp-route-id="@p.Id" method="post" class="d-inline" onsubmit="return confirm('Xóa tin này?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    <div class="card shadow-sm"><div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+                <thead><tr><th>Hình</th><th>Tiêu đề</th><th>Giá</th><th>Trạng thái</th><th>Ngày đăng</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var p in Model)
+                {
+                    <tr>
+                        <td><img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" style="width:80px;height:60px;object-fit:cover" class="rounded" alt="" /></td>
+                        <td class="fw-semibold">@p.Title</td>
+                        <td>@p.Price.ToString("N0") đ</td>
+                        <td>
+                            @switch (p.Status)
+                            {
+                                case PropertyStatus.Pending: <span class="badge bg-warning text-dark">Chờ duyệt</span>; break;
+                                case PropertyStatus.Approved: <span class="badge bg-success">Đã duyệt</span>; break;
+                                case PropertyStatus.Rejected: <span class="badge bg-danger">Bị từ chối</span>; break;
+                                case PropertyStatus.Banned: <span class="badge bg-dark">Bị khóa</span>; break;
+                                case PropertyStatus.Sold: <span class="badge bg-secondary">Đã bán</span>; break;
+                            }
+                        </td>
+                        <td>@p.CreatedAt.ToString("dd/MM/yyyy")</td>
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
+                            <form asp-action="Delete" asp-route-id="@p.Id" method="post" class="d-inline" onsubmit="return confirm('Xóa tin này?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div></div>
 }

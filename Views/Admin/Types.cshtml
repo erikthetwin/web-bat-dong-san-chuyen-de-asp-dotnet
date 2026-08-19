@@ -1,40 +1,45 @@
 @model List<PropertyType>
 @{ ViewData["Title"] = "Loại bất động sản"; }
-<h1 class="h4 mb-3">Loại bất động sản</h1>
+<h1 class="h3 fw-bold mb-4"><i class="bi bi-tags me-2 text-primary"></i>Loại bất động sản</h1>
 <div class="row">
-    <div class="col-md-5">
-        <div class="card shadow-sm mb-3"><div class="card-body">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm mb-4"><div class="card-body">
+            <h2 class="h6 fw-bold text-uppercase text-primary mb-3">Thêm loại mới</h2>
             <form asp-action="CreateType" method="post" class="d-flex gap-2">
                 <input type="text" name="name" class="form-control" placeholder="Tên loại mới" required />
-                <button type="submit" class="btn btn-primary">Thêm</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Thêm</button>
             </form>
         </div></div>
-        <table class="table table-striped align-middle">
-            <thead><tr><th>Tên</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
-            <tbody>
-            @foreach (var t in Model)
-            {
-                <tr>
-                    <td>@t.Name</td>
-                    <td>
-                        @if (t.IsActive)
-                        {
-                            <span class="badge bg-success">Đang dùng</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">Tạm ẩn</span>
-                        }
-                    </td>
-                    <td class="text-end">
-                        <form asp-action="ToggleType" method="post">
-                            <input type="hidden" name="id" value="@t.Id" />
-                            <button class="btn btn-sm btn-outline-secondary">@(t.IsActive ? "Ẩn" : "Hiện")</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+        <div class="card shadow-sm"><div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead><tr><th>Tên</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                    <tbody>
+                    @foreach (var t in Model)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@t.Name</td>
+                            <td>
+                                @if (t.IsActive)
+                                {
+                                    <span class="badge bg-success">Đang dùng</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Tạm ẩn</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <form asp-action="ToggleType" method="post">
+                                    <input type="hidden" name="id" value="@t.Id" />
+                                    <button class="btn btn-sm btn-outline-secondary">@(t.IsActive ? "Ẩn" : "Hiện")</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div></div>
     </div>
 </div>

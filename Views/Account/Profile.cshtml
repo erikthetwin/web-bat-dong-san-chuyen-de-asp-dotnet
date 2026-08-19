@@ -4,20 +4,24 @@
 {
     <div class="alert alert-success">@TempData["Success"]</div>
 }
-<div class="row justify-content-center"><div class="col-md-6">
-    <div class="card shadow-sm"><div class="card-body">
-        <h1 class="h4 mb-3">Hồ sơ cá nhân</h1>
-        <form asp-action="Profile" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="mb-2"><label asp-for="FullName" class="form-label"></label><input asp-for="FullName" class="form-control" /></div>
-            <div class="mb-2"><label asp-for="Phone" class="form-label"></label><input asp-for="Phone" class="form-control" /></div>
-            <div class="mb-2"><label asp-for="Address" class="form-label"></label><input asp-for="Address" class="form-control" /></div>
-            <hr />
-            <p class="text-muted small">Đổi mật khẩu (bỏ trống nếu không đổi)</p>
-            <div class="mb-2"><label asp-for="NewPassword" class="form-label"></label><input asp-for="NewPassword" class="form-control" /></div>
-            <div class="mb-3"><label asp-for="ConfirmNewPassword" class="form-label"></label><input asp-for="ConfirmNewPassword" class="form-control" /></div>
-            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-        </form>
-    </div></div>
+<div class="row justify-content-center py-2"><div class="col-md-7 col-lg-6">
+    <div class="card shadow-lg border-0">
+        <div class="card-header border-0 text-white py-3" style="background: linear-gradient(135deg, #0F766E, #0369A1); border-radius: 1rem 1rem 0 0;">
+            <h1 class="h4 fw-bold mb-0"><i class="bi bi-person-gear me-2"></i>Hồ sơ cá nhân</h1>
+        </div>
+        <div class="card-body p-4">
+            <form asp-action="Profile" method="post">
+                <div asp-validation-summary="All" class="text-danger small"></div>
+                <div class="mb-3"><label asp-for="FullName" class="form-label"></label><input asp-for="FullName" class="form-control" /></div>
+                <div class="mb-3"><label asp-for="Phone" class="form-label"></label><input asp-for="Phone" class="form-control" /></div>
+                <div class="mb-3"><label asp-for="Address" class="form-label"></label><input asp-for="Address" class="form-control" /></div>
+                <hr />
+                <p class="text-muted small mb-3"><i class="bi bi-shield-lock me-1"></i> Đổi mật khẩu (bỏ trống nếu không đổi)</p>
+                <div class="mb-3"><label asp-for="NewPassword" class="form-label"></label><input asp-for="NewPassword" class="form-control" autocomplete="new-password" /></div>
+                <div class="mb-4"><label asp-for="ConfirmNewPassword" class="form-label"></label><input asp-for="ConfirmNewPassword" class="form-control" autocomplete="new-password" /></div>
+                <button type="submit" class="btn btn-primary px-4"><i class="bi bi-check2-circle me-1"></i> Lưu thay đổi</button>
+            </form>
+        </div>
+    </div>
 </div></div>
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }

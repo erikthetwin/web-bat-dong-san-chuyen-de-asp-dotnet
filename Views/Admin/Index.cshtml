@@ -1,55 +1,55 @@
 @model AdminStats
 @{
     ViewData["Title"] = "Trang quản trị";
-    var statusCards = new (string Label, string Badge, int Value)[]
+    var statusCards = new (string Label, string StatClass, int Value)[]
     {
-        ("Tổng tin", "bg-primary", Model.TotalListings),
-        ("Chờ duyệt", "bg-warning text-dark", Model.Pending),
-        ("Đã duyệt", "bg-success", Model.Approved),
-        ("Từ chối", "bg-danger", Model.Rejected),
-        ("Bị khóa", "bg-dark", Model.Banned),
-        ("Đã bán", "bg-secondary", Model.Sold),
-        ("Người dùng", "bg-info", Model.TotalUsers),
-        ("Liên hệ", "bg-secondary", Model.TotalContacts)
+        ("Tổng tin", "stat-teal", Model.TotalListings),
+        ("Chờ duyệt", "stat-amber", Model.Pending),
+        ("Đã duyệt", "stat-green", Model.Approved),
+        ("Từ chối", "stat-red", Model.Rejected),
+        ("Bị khóa", "stat-dark", Model.Banned),
+        ("Đã bán", "stat-slate", Model.Sold),
+        ("Người dùng", "stat-cyan", Model.TotalUsers),
+        ("Liên hệ", "stat-blue", Model.TotalContacts)
     };
 }
-<h1 class="h4 mb-3">Trang quản trị</h1>
+<h1 class="h3 fw-bold mb-4"><i class="bi bi-speedometer2 me-2 text-primary"></i>Trang quản trị</h1>
 <div class="row g-3 mb-4">
     @foreach (var c in statusCards)
     {
-        <div class="col-md-3"><div class="card text-white @c.Badge shadow-sm"><div class="card-body text-center">
-            <div class="fs-3 fw-bold">@c.Value</div><div>@c.Label</div>
+        <div class="col-md-3"><div class="card stat-card @c.StatClass"><div class="card-body text-center">
+            <div class="fs-2 fw-bold">@c.Value</div><div class="small opacity-75">@c.Label</div>
         </div></div></div>
     }
 </div>
-<div class="row">
-    <div class="col-md-6"><div class="card shadow-sm"><div class="card-body">
-        <h2 class="h6">Số tin theo loại hình</h2>
+<div class="row g-4">
+    <div class="col-md-6"><div class="card shadow-sm h-100"><div class="card-body">
+        <h2 class="h6 fw-bold text-uppercase text-primary mb-3">Số tin theo loại hình</h2>
         <table class="table table-sm">
             <thead><tr><th>Loại</th><th class="text-end">Số tin</th></tr></thead>
             <tbody>
             @foreach (var (type, count) in Model.ByType)
             {
-                <tr><td>@type</td><td class="text-end">@count</td></tr>
+                <tr><td>@type</td><td class="text-end fw-semibold">@count</td></tr>
             }
             </tbody>
         </table>
     </div></div></div>
-    <div class="col-md-6"><div class="card shadow-sm"><div class="card-body">
-        <h2 class="h6">Số tin theo quận/huyện</h2>
+    <div class="col-md-6"><div class="card shadow-sm h-100"><div class="card-body">
+        <h2 class="h6 fw-bold text-uppercase text-primary mb-3">Số tin theo quận/huyện</h2>
         <table class="table table-sm">
             <thead><tr><th>Quận</th><th class="text-end">Số tin</th></tr></thead>
             <tbody>
             @foreach (var (district, count) in Model.ByDistrict)
             {
-                <tr><td>@district</td><td class="text-end">@count</td></tr>
+                <tr><td>@district</td><td class="text-end fw-semibold">@count</td></tr>
             }
             </tbody>
         </table>
     </div></div></div>
 </div>
-<div class="mt-3">
-    <a asp-action="Moderation" class="btn btn-primary">Duyệt tin</a>
-    <a asp-action="Users" class="btn btn-outline-primary">Quản lý người dùng</a>
-    <a asp-action="Types" class="btn btn-outline-primary">Loại bất động sản</a>
+<div class="mt-4 d-flex flex-wrap gap-2">
+    <a asp-action="Moderation" class="btn btn-primary"><i class="bi bi-check2-square me-1"></i> Duyệt tin</a>
+    <a asp-action="Users" class="btn btn-outline-primary"><i class="bi bi-people me-1"></i> Quản lý người dùng</a>
+    <a asp-action="Types" class="btn btn-outline-primary"><i class="bi bi-tags me-1"></i> Loại bất động sản</a>
 </div>
