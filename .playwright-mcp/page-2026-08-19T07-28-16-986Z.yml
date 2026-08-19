@@ -1,0 +1,56 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link " Bất động sản" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: 
+        - text: Bất động sản
+      - generic [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "Tìm nhà" [ref=e9] [cursor=pointer]:
+              - /url: /Listings
+          - listitem [ref=e10]:
+            - link "Dự đoán giá" [ref=e11] [cursor=pointer]:
+              - /url: /Ml/Predict
+        - list [ref=e12]:
+          - listitem [ref=e13]:
+            - link "Đăng nhập" [ref=e14] [cursor=pointer]:
+              - /url: /Account/Login
+          - listitem [ref=e15]:
+            - link "Đăng ký" [ref=e16] [cursor=pointer]:
+              - /url: /Account/Register
+  - main [ref=e17]:
+    - generic [ref=e21]:
+      - heading "Tạo tài khoản" [level=1] [ref=e22]
+      - generic [ref=e23]:
+        - generic:
+          - list
+        - generic [ref=e24]:
+          - generic [ref=e25]: Họ tên
+          - textbox "Họ tên" [ref=e26]
+        - generic [ref=e27]:
+          - generic [ref=e28]: Email
+          - textbox "Email" [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]: Số điện thoại
+          - textbox "Số điện thoại" [ref=e32]
+        - generic [ref=e33]:
+          - generic [ref=e34]: Address
+          - textbox "Address" [ref=e35]
+        - generic [ref=e36]:
+          - generic [ref=e37]: Mật khẩu
+          - textbox "Mật khẩu" [ref=e38]
+        - generic [ref=e39]:
+          - generic [ref=e40]: Xác nhận mật khẩu
+          - textbox "Xác nhận mật khẩu" [ref=e41]
+        - generic [ref=e42]:
+          - generic [ref=e43]: Vai trò
+          - combobox "Vai trò" [ref=e44]:
+            - option "Người mua" [selected]
+            - option "Người bán"
+        - button "Đăng ký" [ref=e45] [cursor=pointer]
+      - paragraph [ref=e46]:
+        - link "Đã có tài khoản? Đăng nhập" [ref=e47] [cursor=pointer]:
+          - /url: /Account/Login
+  - contentinfo [ref=e48]: Website mua bán bất động sản — Đồ án Chuyên đề ASP.NET

@@ -1,0 +1,48 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]:
+      - link " Bất động sản" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: 
+        - text: Bất động sản
+      - generic [ref=e6]:
+        - list [ref=e7]:
+          - listitem [ref=e8]:
+            - link "Tìm nhà" [ref=e9] [cursor=pointer]:
+              - /url: /Listings
+          - listitem [ref=e10]:
+            - link "Tin đã lưu" [ref=e11] [cursor=pointer]:
+              - /url: /Favorites
+          - listitem [ref=e12]:
+            - link "Dự đoán giá" [ref=e13] [cursor=pointer]:
+              - /url: /Ml/Predict
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - generic [ref=e16]: Xin chào, buyertest7@demo.com
+          - listitem [ref=e17]:
+            - button "Đăng xuất" [ref=e19] [cursor=pointer]
+  - main [ref=e20]:
+    - generic [ref=e24]:
+      - heading "Hồ sơ cá nhân" [level=1] [ref=e25]
+      - generic [ref=e26]:
+        - generic:
+          - list
+        - generic [ref=e27]:
+          - generic [ref=e28]: Họ tên
+          - textbox "Họ tên" [ref=e29]: Nguyễn Test Mua
+        - generic [ref=e30]:
+          - generic [ref=e31]: Số điện thoại
+          - textbox "Số điện thoại" [ref=e32]: "0901234567"
+        - generic [ref=e33]:
+          - generic [ref=e34]: Address
+          - textbox "Address" [ref=e35]
+        - separator [ref=e36]
+        - paragraph [ref=e37]: Đổi mật khẩu (bỏ trống nếu không đổi)
+        - generic [ref=e38]:
+          - generic [ref=e39]: Mật khẩu mới
+          - textbox "Mật khẩu mới" [ref=e40]
+        - generic [ref=e41]:
+          - generic [ref=e42]: Xác nhận mật khẩu mới
+          - textbox "Xác nhận mật khẩu mới" [ref=e43]
+        - button "Lưu thay đổi" [ref=e44] [cursor=pointer]
+  - contentinfo [ref=e45]: Website mua bán bất động sản — Đồ án Chuyên đề ASP.NET

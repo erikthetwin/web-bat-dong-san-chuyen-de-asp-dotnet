@@ -1,0 +1,127 @@
+- generic [active] [ref=f4e1]:
+  - navigation [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - link " Bất động sản" [ref=f4e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e5]: 
+        - text: Bất động sản
+      - generic [ref=f4e6]:
+        - list [ref=f4e7]:
+          - listitem [ref=f4e8]:
+            - link "Tìm nhà" [ref=f4e9] [cursor=pointer]:
+              - /url: /Listings
+          - listitem [ref=f4e10]:
+            - link "Dự đoán giá" [ref=f4e11] [cursor=pointer]:
+              - /url: /Ml/Predict
+          - listitem [ref=f4e12]:
+            - link "Quản trị" [ref=f4e13] [cursor=pointer]:
+              - /url: /Admin
+        - list [ref=f4e14]:
+          - listitem [ref=f4e15]:
+            - generic [ref=f4e16]: Xin chào, admin@demo.com
+          - listitem [ref=f4e17]:
+            - button "Đăng xuất" [ref=f4e19] [cursor=pointer]
+  - main [ref=f4e20]:
+    - generic [ref=f4e21]:
+      - heading "Tìm bất động sản phù hợp với bạn" [level=1] [ref=f4e22]
+      - paragraph [ref=f4e23]: Mua, bán, cho thuê nhà đất tại TP.HCM
+      - generic [ref=f4e24]:
+        - 'textbox "Từ khóa: tên, địa chỉ..." [ref=f4e26]'
+        - combobox [ref=f4e28]:
+          - option "Tất cả quận/huyện" [selected]
+          - option "Bình Thạnh"
+          - option "Gò Vấp"
+          - option "Nhà Bè"
+          - option "Quận 1"
+          - option "Quận 3"
+          - option "Quận 4"
+          - option "Quận 5"
+          - option "Quận 7"
+          - option "Quận 9"
+          - option "Thủ Đức"
+        - combobox [ref=f4e30]:
+          - option "Tất cả loại hình" [selected]
+          - option "Biệt thự"
+          - option "Căn hộ"
+          - option "Mặt bằng kinh doanh"
+          - option "Nhà mặt tiền"
+          - option "Nhà riêng"
+          - option "Đất"
+        - button " Tìm" [ref=f4e32] [cursor=pointer]:
+          - generic [ref=f4e33]: 
+          - text: Tìm
+    - heading "Bất động sản mới nhất" [level=2] [ref=f4e34]
+    - generic [ref=f4e35]:
+      - generic [ref=f4e37]:
+        - img "Bán biệt thự tại Quận 1, Võ Văn Ngân" [ref=f4e38]
+        - generic [ref=f4e39]:
+          - generic [ref=f4e40]: Bán
+          - heading [level=5] [ref=f4e41]:
+            - link "Bán biệt thự tại Quận 1, Võ Văn Ngân" [ref=f4e42] [cursor=pointer]:
+              - /url: /Listings/Details/5
+          - paragraph [ref=f4e43]: 23,541,567,179 đ
+          - paragraph [ref=f4e44]:
+            - generic [ref=f4e45]: 
+            - text: Quận 1
+          - paragraph [ref=f4e46]: 75 m² · 3 PN · 3 WC
+      - generic [ref=f4e48]:
+        - img "Bán đất tại Quận 9, Hai Bà Trưng" [ref=f4e49]
+        - generic [ref=f4e50]:
+          - generic [ref=f4e51]: Bán
+          - heading [level=5] [ref=f4e52]:
+            - link "Bán đất tại Quận 9, Hai Bà Trưng" [ref=f4e53] [cursor=pointer]:
+              - /url: /Listings/Details/11
+          - paragraph [ref=f4e54]: 9,928,987,086 đ
+          - paragraph [ref=f4e55]:
+            - generic [ref=f4e56]: 
+            - text: Quận 9
+          - paragraph [ref=f4e57]: 175 m² · 1 PN · 1 WC
+      - generic [ref=f4e59]:
+        - img "Bán nhà riêng tại Quận 3, Quốc Lộ 50" [ref=f4e60]
+        - generic [ref=f4e61]:
+          - generic [ref=f4e62]: Bán
+          - heading [level=5] [ref=f4e63]:
+            - link "Bán nhà riêng tại Quận 3, Quốc Lộ 50" [ref=f4e64] [cursor=pointer]:
+              - /url: /Listings/Details/3
+          - paragraph [ref=f4e65]: 19,534,228,880 đ
+          - paragraph [ref=f4e66]:
+            - generic [ref=f4e67]: 
+            - text: Quận 3
+          - paragraph [ref=f4e68]: 112 m² · 3 PN · 2 WC
+      - generic [ref=f4e70]:
+        - img "Bán nhà riêng tại Bình Thạnh, Nguyễn Văn Linh" [ref=f4e71]
+        - generic [ref=f4e72]:
+          - generic [ref=f4e73]: Cho thuê
+          - heading [level=5] [ref=f4e74]:
+            - link "Bán nhà riêng tại Bình Thạnh, Nguyễn Văn Linh" [ref=f4e75] [cursor=pointer]:
+              - /url: /Listings/Details/19
+          - paragraph [ref=f4e76]: 10,873,052,645 đ
+          - paragraph [ref=f4e77]:
+            - generic [ref=f4e78]: 
+            - text: Bình Thạnh
+          - paragraph [ref=f4e79]: 86 m² · 5 PN · 5 WC
+      - generic [ref=f4e81]:
+        - img "Bán nhà riêng tại Gò Vấp, Võ Văn Ngân" [ref=f4e82]
+        - generic [ref=f4e83]:
+          - generic [ref=f4e84]: Cho thuê
+          - heading [level=5] [ref=f4e85]:
+            - link "Bán nhà riêng tại Gò Vấp, Võ Văn Ngân" [ref=f4e86] [cursor=pointer]:
+              - /url: /Listings/Details/1
+          - paragraph [ref=f4e87]: 6,418,176,334 đ
+          - paragraph [ref=f4e88]:
+            - generic [ref=f4e89]: 
+            - text: Gò Vấp
+          - paragraph [ref=f4e90]: 84 m² · 3 PN · 3 WC
+      - generic [ref=f4e92]:
+        - img "Bán đất tại Quận 5, Lê Lợi" [ref=f4e93]
+        - generic [ref=f4e94]:
+          - generic [ref=f4e95]: Bán
+          - heading [level=5] [ref=f4e96]:
+            - link "Bán đất tại Quận 5, Lê Lợi" [ref=f4e97] [cursor=pointer]:
+              - /url: /Listings/Details/15
+          - paragraph [ref=f4e98]: 24,629,189,592 đ
+          - paragraph [ref=f4e99]:
+            - generic [ref=f4e100]: 
+            - text: Quận 5
+          - paragraph [ref=f4e101]: 176 m² · 2 PN · 1 WC
+  - contentinfo [ref=f4e102]: Website mua bán bất động sản — Đồ án Chuyên đề ASP.NET

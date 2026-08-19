@@ -1,0 +1,23 @@
+@model ProfileViewModel
+@{ ViewData["Title"] = "Hồ sơ cá nhân"; }
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+<div class="row justify-content-center"><div class="col-md-6">
+    <div class="card shadow-sm"><div class="card-body">
+        <h1 class="h4 mb-3">Hồ sơ cá nhân</h1>
+        <form asp-action="Profile" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="mb-2"><label asp-for="FullName" class="form-label"></label><input asp-for="FullName" class="form-control" /></div>
+            <div class="mb-2"><label asp-for="Phone" class="form-label"></label><input asp-for="Phone" class="form-control" /></div>
+            <div class="mb-2"><label asp-for="Address" class="form-label"></label><input asp-for="Address" class="form-control" /></div>
+            <hr />
+            <p class="text-muted small">Đổi mật khẩu (bỏ trống nếu không đổi)</p>
+            <div class="mb-2"><label asp-for="NewPassword" class="form-label"></label><input asp-for="NewPassword" class="form-control" /></div>
+            <div class="mb-3"><label asp-for="ConfirmNewPassword" class="form-label"></label><input asp-for="ConfirmNewPassword" class="form-control" /></div>
+            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        </form>
+    </div></div>
+</div></div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
