@@ -1290,6 +1290,7 @@ public async Task<IActionResult> Details(int id)
 @model Property
 @{
     ViewData["Title"] = Model.Title;
+    var images = Model.Images.ToList();
 }
 
 <nav aria-label="breadcrumb"><ol class="breadcrumb">
@@ -1301,21 +1302,21 @@ public async Task<IActionResult> Details(int id)
     <div class="col-lg-8">
         <div id="gallery" class="carousel slide mb-3" data-bs-ride="carousel">
             <div class="carousel-inner">
-                @if (Model.Images.Count == 0)
+                @if (images.Count == 0)
                 {
                     <div class="carousel-item active"><img src="/uploads/placeholder-1.svg" class="d-block w-100" style="height:380px;object-fit:cover" alt="@Model.Title" /></div>
                 }
                 else
                 {
-                    for (int i = 0; i < Model.Images.Count; i++)
+                    for (int i = 0; i < images.Count; i++)
                     {
                         <div class="carousel-item @(i == 0 ? "active" : "")">
-                            <img src="@Model.Images[i].ImageUrl" class="d-block w-100" style="height:380px;object-fit:cover" alt="@Model.Title" />
+                            <img src="@images[i].ImageUrl" class="d-block w-100" style="height:380px;object-fit:cover" alt="@Model.Title" />
                         </div>
                     }
                 }
             </div>
-            @if (Model.Images.Count > 1)
+            @if (images.Count > 1)
             {
                 <button class="carousel-control-prev" type="button" data-bs-target="#gallery" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
                 <button class="carousel-control-next" type="button" data-bs-target="#gallery" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>

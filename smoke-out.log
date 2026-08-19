@@ -1,0 +1,84 @@
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (10ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (4ms) [Parameters=[@__normalizedName_0='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+      FROM "AspNetRoles" AS "a"
+      WHERE "a"."NormalizedName" = @__normalizedName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 6)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+      FROM "AspNetRoles" AS "a"
+      WHERE "a"."NormalizedName" = @__normalizedName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+      FROM "AspNetRoles" AS "a"
+      WHERE "a"."NormalizedName" = @__normalizedName_0
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@__normalizedEmail_0='?' (Size = 14)], CommandType='Text', CommandTimeout='30']
+      SELECT "a"."Id", "a"."AccessFailedCount", "a"."Address", "a"."AvatarUrl", "a"."ConcurrencyStamp", "a"."Email", "a"."EmailConfirmed", "a"."FullName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+      FROM "AspNetUsers" AS "a"
+      WHERE "a"."NormalizedEmail" = @__normalizedEmail_0
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT EXISTS (
+          SELECT 1
+          FROM "PropertyTypes" AS "p")
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT EXISTS (
+          SELECT 1
+          FROM "Properties" AS "p")
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\erikthetwin\Documents\webapp demo
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "t"."Id", "t"."Address", "t"."Area", "t"."Bathrooms", "t"."Bedrooms", "t"."ContactPhone", "t"."CreatedAt", "t"."Description", "t"."District", "t"."FacadeWidth", "t"."Floors", "t"."IsForRent", "t"."Latitude", "t"."Longitude", "t"."OwnerId", "t"."Price", "t"."PropertyTypeId", "t"."Status", "t"."Street", "t"."Title", "t"."UpdatedAt", "t"."Ward", "t"."Id0", "t"."Id1", "p1"."Id", "p1"."ImageUrl", "p1"."IsPrimary", "p1"."PropertyId", "t"."IsActive", "t"."Name", "t"."AccessFailedCount", "t"."Address0", "t"."AvatarUrl", "t"."ConcurrencyStamp", "t"."Email", "t"."EmailConfirmed", "t"."FullName", "t"."LockoutEnabled", "t"."LockoutEnd", "t"."NormalizedEmail", "t"."NormalizedUserName", "t"."PasswordHash", "t"."PhoneNumber", "t"."PhoneNumberConfirmed", "t"."SecurityStamp", "t"."TwoFactorEnabled", "t"."UserName"
+      FROM (
+          SELECT "p"."Id", "p"."Address", "p"."Area", "p"."Bathrooms", "p"."Bedrooms", "p"."ContactPhone", "p"."CreatedAt", "p"."Description", "p"."District", "p"."FacadeWidth", "p"."Floors", "p"."IsForRent", "p"."Latitude", "p"."Longitude", "p"."OwnerId", "p"."Price", "p"."PropertyTypeId", "p"."Status", "p"."Street", "p"."Title", "p"."UpdatedAt", "p"."Ward", "p0"."Id" AS "Id0", "p0"."IsActive", "p0"."Name", "a"."Id" AS "Id1", "a"."AccessFailedCount", "a"."Address" AS "Address0", "a"."AvatarUrl", "a"."ConcurrencyStamp", "a"."Email", "a"."EmailConfirmed", "a"."FullName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+          FROM "Properties" AS "p"
+          INNER JOIN "PropertyTypes" AS "p0" ON "p"."PropertyTypeId" = "p0"."Id"
+          INNER JOIN "AspNetUsers" AS "a" ON "p"."OwnerId" = "a"."Id"
+          WHERE "p"."Id" = @__id_0 AND "p"."Status" = 1
+          LIMIT 1
+      ) AS "t"
+      LEFT JOIN "PropertyImages" AS "p1" ON "t"."Id" = "p1"."PropertyId"
+      ORDER BY "t"."Id", "t"."Id0", "t"."Id1"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "t"."Id", "t"."Address", "t"."Area", "t"."Bathrooms", "t"."Bedrooms", "t"."ContactPhone", "t"."CreatedAt", "t"."Description", "t"."District", "t"."FacadeWidth", "t"."Floors", "t"."IsForRent", "t"."Latitude", "t"."Longitude", "t"."OwnerId", "t"."Price", "t"."PropertyTypeId", "t"."Status", "t"."Street", "t"."Title", "t"."UpdatedAt", "t"."Ward", "t"."Id0", "t"."Id1", "p1"."Id", "p1"."ImageUrl", "p1"."IsPrimary", "p1"."PropertyId", "t"."IsActive", "t"."Name", "t"."AccessFailedCount", "t"."Address0", "t"."AvatarUrl", "t"."ConcurrencyStamp", "t"."Email", "t"."EmailConfirmed", "t"."FullName", "t"."LockoutEnabled", "t"."LockoutEnd", "t"."NormalizedEmail", "t"."NormalizedUserName", "t"."PasswordHash", "t"."PhoneNumber", "t"."PhoneNumberConfirmed", "t"."SecurityStamp", "t"."TwoFactorEnabled", "t"."UserName"
+      FROM (
+          SELECT "p"."Id", "p"."Address", "p"."Area", "p"."Bathrooms", "p"."Bedrooms", "p"."ContactPhone", "p"."CreatedAt", "p"."Description", "p"."District", "p"."FacadeWidth", "p"."Floors", "p"."IsForRent", "p"."Latitude", "p"."Longitude", "p"."OwnerId", "p"."Price", "p"."PropertyTypeId", "p"."Status", "p"."Street", "p"."Title", "p"."UpdatedAt", "p"."Ward", "p0"."Id" AS "Id0", "p0"."IsActive", "p0"."Name", "a"."Id" AS "Id1", "a"."AccessFailedCount", "a"."Address" AS "Address0", "a"."AvatarUrl", "a"."ConcurrencyStamp", "a"."Email", "a"."EmailConfirmed", "a"."FullName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+          FROM "Properties" AS "p"
+          INNER JOIN "PropertyTypes" AS "p0" ON "p"."PropertyTypeId" = "p0"."Id"
+          INNER JOIN "AspNetUsers" AS "a" ON "p"."OwnerId" = "a"."Id"
+          WHERE "p"."Id" = @__id_0 AND "p"."Status" = 1
+          LIMIT 1
+      ) AS "t"
+      LEFT JOIN "PropertyImages" AS "p1" ON "t"."Id" = "p1"."PropertyId"
+      ORDER BY "t"."Id", "t"."Id0", "t"."Id1"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "t"."Id", "t"."Address", "t"."Area", "t"."Bathrooms", "t"."Bedrooms", "t"."ContactPhone", "t"."CreatedAt", "t"."Description", "t"."District", "t"."FacadeWidth", "t"."Floors", "t"."IsForRent", "t"."Latitude", "t"."Longitude", "t"."OwnerId", "t"."Price", "t"."PropertyTypeId", "t"."Status", "t"."Street", "t"."Title", "t"."UpdatedAt", "t"."Ward", "t"."Id0", "t"."Id1", "p1"."Id", "p1"."ImageUrl", "p1"."IsPrimary", "p1"."PropertyId", "t"."IsActive", "t"."Name", "t"."AccessFailedCount", "t"."Address0", "t"."AvatarUrl", "t"."ConcurrencyStamp", "t"."Email", "t"."EmailConfirmed", "t"."FullName", "t"."LockoutEnabled", "t"."LockoutEnd", "t"."NormalizedEmail", "t"."NormalizedUserName", "t"."PasswordHash", "t"."PhoneNumber", "t"."PhoneNumberConfirmed", "t"."SecurityStamp", "t"."TwoFactorEnabled", "t"."UserName"
+      FROM (
+          SELECT "p"."Id", "p"."Address", "p"."Area", "p"."Bathrooms", "p"."Bedrooms", "p"."ContactPhone", "p"."CreatedAt", "p"."Description", "p"."District", "p"."FacadeWidth", "p"."Floors", "p"."IsForRent", "p"."Latitude", "p"."Longitude", "p"."OwnerId", "p"."Price", "p"."PropertyTypeId", "p"."Status", "p"."Street", "p"."Title", "p"."UpdatedAt", "p"."Ward", "p0"."Id" AS "Id0", "p0"."IsActive", "p0"."Name", "a"."Id" AS "Id1", "a"."AccessFailedCount", "a"."Address" AS "Address0", "a"."AvatarUrl", "a"."ConcurrencyStamp", "a"."Email", "a"."EmailConfirmed", "a"."FullName", "a"."LockoutEnabled", "a"."LockoutEnd", "a"."NormalizedEmail", "a"."NormalizedUserName", "a"."PasswordHash", "a"."PhoneNumber", "a"."PhoneNumberConfirmed", "a"."SecurityStamp", "a"."TwoFactorEnabled", "a"."UserName"
+          FROM "Properties" AS "p"
+          INNER JOIN "PropertyTypes" AS "p0" ON "p"."PropertyTypeId" = "p0"."Id"
+          INNER JOIN "AspNetUsers" AS "a" ON "p"."OwnerId" = "a"."Id"
+          WHERE "p"."Id" = @__id_0 AND "p"."Status" = 1
+          LIMIT 1
+      ) AS "t"
+      LEFT JOIN "PropertyImages" AS "p1" ON "t"."Id" = "p1"."PropertyId"
+      ORDER BY "t"."Id", "t"."Id0", "t"."Id1"

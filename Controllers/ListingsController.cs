@@ -24,4 +24,11 @@ public class ListingsController : Controller
         ViewBag.Districts = await _listings.GetDistrictsAsync();
         return View(result);
     }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var p = await _listings.GetApprovedByIdAsync(id);
+        if (p == null) return NotFound();
+        return View(p);
+    }
 }
