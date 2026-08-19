@@ -1,4 +1,4 @@
-# Website mua bán bất động sản (Chuyên đề ASP.NET)
+# Website mua bán bất động sản (chuyên đề ASP.NET)
 
 Đồ án xây dựng website mua bán bất động sản - ASP.NET Core MVC (.NET 8), EF Core + SQLite, ASP.NET Identity, Bootstrap 5, Leaflet, ML.NET.
 
