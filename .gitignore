@@ -11,5 +11,5 @@ smoke-*.log
 .playwright-mcp/
 .omo/
 .opencode/
-docs/superpowers/
+docs/
 handoff.md
