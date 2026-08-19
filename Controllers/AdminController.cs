@@ -120,4 +120,31 @@ public class AdminController : Controller
             await _userManager.DeleteAsync(u);
         return RedirectToAction("Users");
     }
+
+    public async Task<IActionResult> Types()
+    {
+        var items = await _db.PropertyTypes.OrderBy(t => t.Name).ToListAsync();
+        return View(items);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateType(string name)
+    {
+        if (!string.IsNullOrWhiteSpace(name) && !await _db.PropertyTypes.AnyAsync(t => t.Name == name.Trim()))
+        {
+            _db.PropertyTypes.Add(new PropertyType { Name = name.Trim() });
+            await _db.SaveChangesAsync();
+        }
+        return RedirectToAction("Types");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleType(int id)
+    {
+        var t = await _db.PropertyTypes.FindAsync(id);
+        if (t != null) { t.IsActive = !t.IsActive; await _db.SaveChangesAsync(); }
+        return RedirectToAction("Types");
+    }
 }
