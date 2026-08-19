@@ -1,1 +1,56 @@
-<h1>Website mua bán bất động sản</h1>
+@model List<Property>
+@{
+    ViewData["Title"] = "Trang chủ";
+    var types = (List<PropertyType>?)ViewBag.Types ?? new();
+    var districts = (List<string>?)ViewBag.Districts ?? new();
+}
+
+<section class="bg-primary text-white rounded-4 p-5 mb-4 shadow-sm">
+    <h1 class="display-5 fw-bold">Tìm bất động sản phù hợp với bạn</h1>
+    <p class="lead">Mua, bán, cho thuê nhà đất tại TP.HCM</p>
+    <form asp-controller="Listings" asp-action="Index" method="get" class="row g-2 mt-3 bg-white p-3 rounded-3">
+        <div class="col-md-4">
+            <input type="text" name="keyword" class="form-control" placeholder="Từ khóa: tên, địa chỉ..." />
+        </div>
+        <div class="col-md-3">
+            <select name="district" class="form-select">
+                <option value="">Tất cả quận/huyện</option>
+                @foreach (var d in districts)
+                {
+                    <option value="@d">@d</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select name="propertyTypeId" class="form-select">
+                <option value="">Tất cả loại hình</option>
+                @foreach (var t in types)
+                {
+                    <option value="@t.Id">@t.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-warning w-100"><i class="bi bi-search"></i> Tìm</button>
+        </div>
+    </form>
+</section>
+
+<h2 class="mb-3">Bất động sản mới nhất</h2>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var p in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <img src="@(p.Images.FirstOrDefault()?.ImageUrl ?? "/uploads/placeholder-1.svg")" class="card-img-top" style="height:200px;object-fit:cover" alt="@p.Title" />
+                <div class="card-body">
+                    <span class="badge bg-danger mb-2">@(p.IsForRent ? "Cho thuê" : "Bán")</span>
+                    <h5 class="card-title"><a asp-controller="Listings" asp-action="Details" asp-route-id="@p.Id" class="text-decoration-none">@p.Title</a></h5>
+                    <p class="text-primary fw-bold mb-1">@p.Price.ToString("N0") đ</p>
+                    <p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> @p.District</p>
+                    <p class="text-muted small mb-0">@p.Area.ToString("N0") m² · @p.Bedrooms PN · @p.Bathrooms WC</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
