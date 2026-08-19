@@ -1,0 +1,47 @@
+@model PropertyFormViewModel
+@{
+    ViewData["Title"] = "Đăng tin mới";
+    var types = (List<PropertyType>?)ViewBag.Types ?? new();
+    var districts = (List<string>?)ViewBag.Districts ?? new();
+}
+<h1 class="h4 mb-3">Đăng tin mới</h1>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm mb-3"><div class="card-body">
+                <div class="mb-2"><label asp-for="Title" class="form-label"></label><input asp-for="Title" class="form-control" /></div>
+                <div class="mb-2"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="5"></textarea></div>
+                <div class="row g-2">
+                    <div class="col-md-6"><label asp-for="Price" class="form-label"></label><input asp-for="Price" class="form-control" /></div>
+                    <div class="col-md-6"><label asp-for="Area" class="form-label"></label><input asp-for="Area" class="form-control" /></div>
+                    <div class="col-md-3"><label asp-for="Bedrooms" class="form-label"></label><input asp-for="Bedrooms" class="form-control" /></div>
+                    <div class="col-md-3"><label asp-for="Bathrooms" class="form-label"></label><input asp-for="Bathrooms" class="form-control" /></div>
+                    <div class="col-md-3"><label asp-for="Floors" class="form-label"></label><input asp-for="Floors" class="form-control" /></div>
+                    <div class="col-md-3"><label asp-for="FacadeWidth" class="form-label"></label><input asp-for="FacadeWidth" class="form-control" /></div>
+                </div>
+            </div></div>
+            <div class="card shadow-sm mb-3"><div class="card-body">
+                <h2 class="h6">Vị trí</h2>
+                <div class="row g-2">
+                    <div class="col-md-4"><label asp-for="District" class="form-label"></label><select asp-for="District" class="form-select"><option value="">Chọn quận</option>@foreach (var d in districts) { <option value="@d">@d</option> }</select></div>
+                    <div class="col-md-4"><label asp-for="Ward" class="form-label"></label><input asp-for="Ward" class="form-control" /></div>
+                    <div class="col-md-4"><label asp-for="Street" class="form-label"></label><input asp-for="Street" class="form-control" /></div>
+                    <div class="col-md-8"><label asp-for="Address" class="form-label"></label><input asp-for="Address" class="form-control" /></div>
+                    <div class="col-md-2"><label asp-for="Latitude" class="form-label"></label><input asp-for="Latitude" class="form-control" /></div>
+                    <div class="col-md-2"><label asp-for="Longitude" class="form-label"></label><input asp-for="Longitude" class="form-control" /></div>
+                </div>
+            </div></div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-3"><div class="card-body">
+                <div class="mb-2"><label asp-for="PropertyTypeId" class="form-label"></label><select asp-for="PropertyTypeId" class="form-select" required><option value="">Chọn loại</option>@foreach (var t in types) { <option value="@t.Id">@t.Name</option> }</select></div>
+                <div class="mb-2"><label asp-for="ContactPhone" class="form-label"></label><input asp-for="ContactPhone" class="form-control" /></div>
+                <div class="form-check mb-3"><input asp-for="IsForRent" class="form-check-input" /><label asp-for="IsForRent" class="form-check-label"></label></div>
+                <div class="mb-2"><label asp-for="Images" class="form-label"></label><input asp-for="Images" type="file" class="form-control" multiple accept=".jpg,.jpeg,.png,.webp" /></div>
+                <button type="submit" class="btn btn-primary w-100">Đăng tin</button>
+            </div></div>
+        </div>
+    </div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
