@@ -1,12 +1,14 @@
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using Microsoft.ML.Trainers.FastTree;
+using System.Text.Json;
 
 namespace webapp_demo.Services.ML;
 
 public class PricePredictionService : IPricePredictionService
 {
     private readonly string _modelPath;
+    private readonly string _metricsPath;
     private MLContext? _ml;
     private ITransformer? _model;
     private double _r2, _rmse, _mae;
@@ -15,6 +17,7 @@ public class PricePredictionService : IPricePredictionService
     public PricePredictionService(IWebHostEnvironment env)
     {
         _modelPath = Path.Combine(env.ContentRootPath, "ML", "model.zip");
+        _metricsPath = Path.Combine(env.ContentRootPath, "ML", "metrics.json");
     }
 
     public Task TrainIfNeededAsync()
@@ -45,12 +48,20 @@ public class PricePredictionService : IPricePredictionService
         Directory.CreateDirectory(Path.GetDirectoryName(_modelPath)!);
         _ml.Model.Save(model, split.TrainSet.Schema, _modelPath);
         _model = model;
+        File.WriteAllText(_metricsPath, JsonSerializer.Serialize(new { R2 = _r2, RMSE = _rmse, MAE = _mae }));
     }
 
     private Task LoadAsync()
     {
         _ml = new MLContext(seed: 1);
         _model = _ml.Model.Load(_modelPath, out _);
+        if (File.Exists(_metricsPath))
+        {
+            using var doc = JsonDocument.Parse(File.ReadAllText(_metricsPath));
+            _r2 = doc.RootElement.GetProperty("R2").GetDouble();
+            _rmse = doc.RootElement.GetProperty("RMSE").GetDouble();
+            _mae = doc.RootElement.GetProperty("MAE").GetDouble();
+        }
         return Task.CompletedTask;
     }
 

@@ -216,3 +216,66 @@ Kiểm chứng DB cuối: `users = [admin, seller]`, `props = 23`, `images = 23`
 > (seller, buyertest7 và toàn bộ tin) không giải thích được bằng luồng test — DB đã được
 > tạo lại từ seed (đúng trạng thái demo chuẩn: admin, seller, 23 tin, 6 loại) trước khi kiểm thử
 > cô lập ở trên.
+---
+
+# Phụ lục B — Kiểm thử toàn diện đa tài khoản (19/08/2026, v2)
+
+Kiểm thử lại TOÀN BỘ chức năng với 3 vai trò trên server live, kèm kiểm chứng DB sau từng nhóm.
+Phát hiện 1 bug (hiển thị chỉ số ML sau khi khởi động lại) → đã sửa + xác minh.
+
+## Tài khoản
+
+| Vai trò | Email | Mật khẩu |
+|---|---|---|
+| Admin | admin@demo.com | Admin@123 |
+| Seller | seller@demo.com | Seller@123 |
+| Buyer (mới) | anhnha@demo.com | Test@12345 |
+
+## Kết quả theo nhóm chức năng
+
+| # | Nhóm | Thao tác | Kết quả |
+|---|---|---|---|
+| 1 | Khách - trang chủ | Hero + 6 tin nổi bật | ✅ |
+| 2 | Khách - danh sách | Phân trang 1-2 (10 tin/trang), sort, lọc phòng ngủ (9 kết quả 3PN) | ✅ |
+| 3 | Khách - chi tiết | Bản đồ Leaflet, gallery 10 ảnh; chưa đăng nhập thấy "đăng nhập để liên hệ", KHÔNG có nút lưu tin | ✅ |
+| 4 | Buyer - đăng ký | Form đầy đủ, tự đăng nhập sau đăng ký | ✅ |
+| 5 | Buyer - yêu thích | Lưu 2 tin → /Favorites hiện 2 → bỏ lưu 1 → còn 1 | ✅ |
+| 6 | Buyer - liên hệ | Gửi liên hệ có SĐT → lưu DB (1 dòng, đúng phone+message) | ✅ |
+| 7 | Buyer - validate | Gửi liên hệ KHÔNG có SĐT → bị chặn (không có dòng mới trong DB) | ✅ |
+| 8 | Buyer - hồ sơ | Sửa tên/SĐT/địa chỉ → lưu thành công, hiển thị lại đúng | ✅ |
+| 9 | Seller - đăng tin | Đăng 4 tin kèm 1 ảnh mỗi tin → trạng thái "Chờ duyệt", KHÔNG hiện ở /Listings công khai | ✅ |
+| 10 | Seller - sửa tin | Sửa tiêu đề + giá → vẫn "Chờ duyệt", không lộ công khai | ✅ |
+| 11 | Seller - xóa tin | Xóa tin D (có dialog xác nhận) → biến mất khỏi "Tin của tôi" + DB | ✅ |
+| 12 | Admin - duyệt tin | Duyệt A → công khai; Từ chối B (Status=2); Khóa C (Status=3); kiểm chứng enum: 0=Pending 1=Approved 2=Rejected 3=Banned | ✅ |
+| 13 | Admin - quyền | /Admin/* chặn người không phải admin (AccessDenied), /MyListings/Create chặn admin | ✅ |
+| 14 | Công khai - lifecycle | A hiện ở /Listings (200), B/C/D chi tiết trả 404, không xuất hiện trong tìm kiếm | ✅ |
+| 15 | Admin - loại BĐS | Thêm "Nhà phố thương mại" → hiện ở filter /Listings + form đăng tin seller; Ẩn → biến mất khỏi filter; Hiện → trở lại | ✅ |
+| 16 | Admin - người dùng | Khóa anhnha → đăng nhập bị chặn ("Email hoặc mật khẩu không đúng"); Mở khóa → vào được; đổi vai trò Buyer↔Seller (vòng đủ); dòng admin không có nút Khóa/Xóa | ✅ |
+| 17 | Admin - xóa user | Xóa tmpdel2 (user mới, không dữ liệu) → biến mất khỏi bảng + DB | ✅ |
+| 18 | Admin - dashboard | 26 tổng / 3 chờ duyệt / 21 đã duyệt / 1 từ chối / 1 khóa / 3 user / 1 liên hệ — khớp 100% truy vấn DB | ✅ |
+| 19 | ML - dự đoán | Mua: 11.268.080.000 đ; Thuê: 11.200.080.000 đ | ✅ |
+| 20 | ML - chỉ số | R² 0.963 / RMSE 2.428.848.273 / MAE 1.638.812.770 (sau khi sửa bug, xem dưới) | ✅ |
+| 21 | Toàn vẹn DB cuối | users [admin, seller, anhnha] (không khóa); 26 tin; 7 loại (7 active); favs/contacts của anhnha còn nguyên sau mọi thao tác | ✅ |
+
+## Bug phát hiện lần này: chỉ số ML = 0 sau khi khởi động lại (đã sửa)
+
+**Triệu chứng:** Chạy dự đoán giá → kết quả vẫn đúng nhưng hiển thị `R² 0 / RMSE 0 / MAE 0`.
+
+**Nguyên nhân gốc:** `PricePredictionService` chỉ tính R²/RMSE/MAE trong lúc huấn luyện (lần đầu chạy),
+nhưng không lưu trữ. Lần chạy sau (đã có model.zip) đi qua nhánh `LoadAsync` → các chỉ số mặc định = 0.
+Model ML.NET không mang sẵn các chỉ số này.
+
+**Cách sửa (`Services/ML/PricePredictionService.cs`):** khi huấn luyện xong, ghi `ML/metrics.json`
+(R2/RMSE/MAE); `LoadAsync` đọc file này để khôi phục chỉ số.
+
+**Xác minh:**
+- Xóa model.zip → khởi động → huấn luyện lại (seed=1, số liệu trùng T14) → dự đoán hiển thị R² 0.963, RMSE 2.428.848.273, MAE 1.638.812.770 ✅
+- Khởi động lại server (nhánh LoadAsync, có sẵn model.zip + metrics.json) → dự đoán vẫn hiển thị đủ chỉ số ✅
+
+## Ghi chú môi trường
+
+- `dotnet watch` nhiều lần chết âm thầm giữa chừng (không có log lỗi) → phải kiểm tra server trước mỗi lượt test, khởi động lại bằng lệnh Start-Process nếu cần.
+- Dialog xác nhận: đăng ký `page.on('dialog')` TRƯỚC khi click; MCP sẽ báo "Modal state" còn treo nhưng thực tế dialog đã được xử lý — bỏ qua, kiểm tra DB để xác nhận kết quả.
+- Nút "Sửa" ở bảng "Tin của tôi" là thẻ `<a>` (không phải `<button>`); nút "Xóa" là submit của form kèm `confirm()`.
+- Trang Duyệt tin / Loại BĐS dùng thẻ `div.card`, không phải bảng.
+- Form dự đoán giá không có trường "Giá" — có `PropertyType` thay thế.
