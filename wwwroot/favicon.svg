@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#134E4A"/>
+      <stop offset="0.55" stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#0369A1"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#g)"/>
+  <path d="M18 48V22l14-8 14 8v26" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M18 30h28" fill="none" stroke="#fff" stroke-width="5"/>
+  <text x="32" y="57" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#fff" letter-spacing="1">VN</text>
+</svg>
