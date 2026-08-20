@@ -8,6 +8,7 @@ wwwroot/uploads/
 TestResults/
 *.user
 smoke-*.log
+server-*.log
 .playwright-mcp/
 .omo/
 .opencode/
