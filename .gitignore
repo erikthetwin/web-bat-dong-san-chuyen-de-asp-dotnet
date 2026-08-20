@@ -13,4 +13,3 @@ server-*.log
 .opencode/
 docs/
 handoff.md
-opencode.json
