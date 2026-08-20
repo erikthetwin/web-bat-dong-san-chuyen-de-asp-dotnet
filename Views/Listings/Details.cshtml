@@ -75,6 +75,7 @@
                 }
                 <form asp-controller="Listings" asp-action="Contact" method="post">
                     <input type="hidden" name="propertyId" value="@Model.Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
                     <div class="mb-2"><input type="text" name="name" class="form-control" placeholder="Họ tên" value="@User.Identity.Name" required /></div>
                     <div class="mb-2"><input type="text" name="phone" class="form-control" placeholder="Số điện thoại" required /></div>
                     <div class="mb-3"><textarea name="message" class="form-control" rows="3" placeholder="Nội dung liên hệ..."></textarea></div>
